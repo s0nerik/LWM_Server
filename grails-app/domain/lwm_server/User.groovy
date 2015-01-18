@@ -7,7 +7,7 @@ class User {
     String password;
     String avatar_url;
 
-    static hasMany = [songs: Song, albums: Album]
+    static hasMany = [songs: Song, albums: Album, artsts: Artist]
 
     static constraints = {
         name size: 2..50, blank: true
