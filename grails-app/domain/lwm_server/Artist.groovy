@@ -7,6 +7,7 @@ class Artist {
     int albumsNum;
 
     static hasMany = [users: User]
+    static belongsTo = [User]
 
     static constraints = {
     }
