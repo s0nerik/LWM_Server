@@ -1,13 +1,12 @@
 package lwm_server
 
-class Song {
+class Album {
 
     String title;
-    int duration;
+    String coverUrl;
     int year;
 
     static hasMany = [users: User]
-    static belongsTo = [Album]
 
     static constraints = {
     }
