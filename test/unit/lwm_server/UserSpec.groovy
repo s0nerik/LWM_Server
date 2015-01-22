@@ -15,6 +15,18 @@ class UserSpec extends Specification {
     def cleanup() {
     }
 
-    void "test something"() {
+    def "create new User"() {
+        given:
+        def u = new User(email: "sonerik@mail.ua", password: "12345678")
+
+        when:
+        u.save()
+
+        then:
+        User.findAll {it.email == "sonerik@mail.ua"}.size() == 1
+
+        cleanup:
+        u.delete()
     }
+
 }

@@ -6,7 +6,6 @@ class Song {
     int duration
     int year
 
-//    static hasMany = [users: User]
     static belongsTo = [album: Album]
 
     static constraints = {
