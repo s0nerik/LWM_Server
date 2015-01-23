@@ -10,6 +10,8 @@ class Album {
     static belongsTo = [artist: Artist]
 
     static constraints = {
+        title blank: false, nullable: false
+        coverUrl blank: true, nullable: true
     }
 
     static mapping = {

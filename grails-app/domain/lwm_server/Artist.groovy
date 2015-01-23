@@ -9,6 +9,7 @@ class Artist {
     static hasMany = [albums: Album]
 
     static constraints = {
+        name blank: false, nullable: false
     }
 
     static mapping = {
