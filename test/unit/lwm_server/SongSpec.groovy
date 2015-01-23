@@ -15,6 +15,12 @@ class SongSpec extends Specification {
     def cleanup() {
     }
 
-    void "test something"() {
+    void "can't create a new Song without specifying Album"() {
+        given:
+        Song s = new Song()
+
+        expect:
+        s.validate() == false
     }
+
 }
