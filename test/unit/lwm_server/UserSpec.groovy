@@ -15,7 +15,7 @@ class UserSpec extends Specification {
     def cleanup() {
     }
 
-    def "create a new User"() {
+    def "test creating a new User"() {
         given:
         def u = new User(email: "sonerik@mail.ua", password: "12345678")
 
@@ -29,7 +29,7 @@ class UserSpec extends Specification {
         u.delete()
     }
 
-    def "can't create a new User with broken email"() {
+    def "test creating a new User with broken email"() {
         given:
         def u = new User(email: "tatae_4dc", password: "12345678")
 
@@ -43,7 +43,7 @@ class UserSpec extends Specification {
         u.delete()
     }
 
-    def "validatation of a User with broken email should fail"() {
+    def "test validating a User with broken email"() {
         given:
         def u = new User(email: "tatae_4dc", password: "12345678")
 
@@ -51,7 +51,7 @@ class UserSpec extends Specification {
         u.validate() == false
     }
 
-    def "validatation of a User with too short password should fail"() {
+    def "test validating a User with too short password"() {
         given:
         def u = new User(email: "sonerik@mail.ua", password: "123456")
 
@@ -59,7 +59,7 @@ class UserSpec extends Specification {
         u.validate() == false
     }
 
-    def "can't create two or more Users with same email"() {
+    def "test creating two or more Users with same email"() {
         given:
         def u1 = new User(name: "user1", email: "sonerik@mail.ua", password: "12345678")
         def u2 = new User(name: "user2", email: "sonerik@mail.ua", password: "123456789")

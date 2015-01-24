@@ -17,7 +17,7 @@ class SongSpec extends Specification {
     def cleanup() {
     }
 
-    void "test creation of a new Song without specifying Album"() {
+    void "test creating of a new Song without specifying Album"() {
         given:
         Song s = new Song()
 
@@ -25,7 +25,7 @@ class SongSpec extends Specification {
         s.validate() == false
     }
 
-    void "test creation of a new Song with specifying Album"() {
+    void "test creating of a new Song with specifying Album"() {
         given:
         Artist artist = new Artist(name: "Asking Alexandria")
         Album album = new Album(title: "From Death To Destiny", artist: artist)
