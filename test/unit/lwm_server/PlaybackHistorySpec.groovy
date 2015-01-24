@@ -15,6 +15,21 @@ class PlaybackHistorySpec extends Specification {
     def cleanup() {
     }
 
-    void "test something"() {
+    void "test validating PlaybackHistory without a Date"() {
+        given:
+        PlaybackHistory p = new PlaybackHistory()
+
+        expect:
+        p.validate() == false
     }
+
+    void "test validating PlaybackHistory with a Date"() {
+        given:
+        PlaybackHistory p = new PlaybackHistory(date: new Date(System.currentTimeMillis()))
+
+        expect:
+        p.validate() == true
+    }
+
+
 }

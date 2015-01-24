@@ -8,6 +8,7 @@ class PlaybackHistory {
     static belongsTo = User
 
     static constraints = {
+        date nullable: false
     }
 
     static mapping = {
