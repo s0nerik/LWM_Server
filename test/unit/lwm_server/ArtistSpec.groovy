@@ -15,6 +15,20 @@ class ArtistSpec extends Specification {
     def cleanup() {
     }
 
-    void "test something"() {
+    void "test validating Artist without a name"() {
+        given:
+        Artist a = new Artist()
+
+        expect:
+        a.validate() == false
     }
+
+    void "test validating Artist with a name"() {
+        given:
+        Artist a = new Artist(name: "Asking Alexandria")
+
+        expect:
+        a.validate() == true
+    }
+
 }
