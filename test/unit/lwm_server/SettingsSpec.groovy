@@ -15,6 +15,11 @@ class SettingsSpec extends Specification {
     def cleanup() {
     }
 
-    void "test something"() {
+    void "test validating empty settings"() {
+        given:
+        Settings s = new Settings(user: new User())
+
+        expect:
+        s.validate() == true
     }
 }
