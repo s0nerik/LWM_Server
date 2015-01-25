@@ -7,8 +7,7 @@ class User {
     String password
     String avatar_url
 
-    static hasMany = [songs: Song]
-    static hasOne = PlaybackHistory
+    static hasMany = [songs: Song, playbackHistory: PlaybackHistoryItem]
 
     static constraints = {
         name size: 2..50, blank: true, nullable: true

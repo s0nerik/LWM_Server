@@ -1,10 +1,10 @@
 package lwm_server
 
-class PlaybackHistory {
+class PlaybackHistoryItem {
 
     Date date
 
-    static hasMany = [songs: Song]
+    static hasOne = Song
     static belongsTo = [user: User]
 
     static constraints = {

@@ -6,8 +6,8 @@ import spock.lang.Specification
 /**
  * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
  */
-@TestFor(PlaybackHistory)
-class PlaybackHistorySpec extends Specification {
+@TestFor(PlaybackHistoryItem)
+class PlaybackHistoryItemSpec extends Specification {
 
     def setup() {
     }
@@ -17,7 +17,7 @@ class PlaybackHistorySpec extends Specification {
 
     void "test validating PlaybackHistory without a Date and User"() {
         given:
-        PlaybackHistory p = new PlaybackHistory()
+        PlaybackHistoryItem p = new PlaybackHistoryItem()
 
         expect:
         p.validate() == false
@@ -25,7 +25,7 @@ class PlaybackHistorySpec extends Specification {
 
     void "test validating PlaybackHistory without a Date, but with User"() {
         given:
-        PlaybackHistory p = new PlaybackHistory(user: new User())
+        PlaybackHistoryItem p = new PlaybackHistoryItem(user: new User())
 
         expect:
         p.validate() == false
@@ -33,7 +33,7 @@ class PlaybackHistorySpec extends Specification {
 
     void "test validating PlaybackHistory with a Date, but without User"() {
         given:
-        PlaybackHistory p = new PlaybackHistory(date: new Date(System.currentTimeMillis()))
+        PlaybackHistoryItem p = new PlaybackHistoryItem(date: new Date(System.currentTimeMillis()))
 
         expect:
         p.validate() == false
@@ -41,7 +41,7 @@ class PlaybackHistorySpec extends Specification {
 
     void "test saving PlaybackHistory without User"() {
         given:
-        PlaybackHistory p = new PlaybackHistory(date: new Date(System.currentTimeMillis()))
+        PlaybackHistoryItem p = new PlaybackHistoryItem(date: new Date(System.currentTimeMillis()))
 
         when:
         p.save()
@@ -56,7 +56,7 @@ class PlaybackHistorySpec extends Specification {
     void "test validating PlaybackHistory with User"() {
         given:
         User user = new User()
-        PlaybackHistory p = new PlaybackHistory(date: new Date(System.currentTimeMillis()), user: user)
+        PlaybackHistoryItem p = new PlaybackHistoryItem(date: new Date(System.currentTimeMillis()), user: user)
 
         expect:
         p.validate() == true
