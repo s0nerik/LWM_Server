@@ -5,7 +5,7 @@ class PlaybackHistory {
     Date date
 
     static hasMany = [songs: Song]
-    static belongsTo = User
+    static belongsTo = [user: User]
 
     static constraints = {
         date nullable: false
