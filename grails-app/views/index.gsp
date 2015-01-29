@@ -29,18 +29,6 @@
 
     <script src="https://apis.google.com/js/client:platform.js" async defer></script>
 
-    <script>
-        var size = 3;
-        function switchPhoneScreen() {
-            var p = document.getElementById('core_animated_pages');
-            p.selected += 1;
-            p.selected = p.selected % size;
-            setTimeout(switchPhoneScreen, 3000);
-        }
-
-        window.onload = switchPhoneScreen;
-    </script>
-
 </head>
 
 <body fullbleed="" >
@@ -127,33 +115,22 @@
         </template>
 
         <script>
-
             Polymer({
-
+                switchPhoneScreen: function () {
+                    var p = this.shadowRoot.querySelector('#core_animated_pages');
+                    p.selected += 1;
+                    p.selected = p.selected % 3;
+                    this.async(this.switchPhoneScreen, null, 1000);
+                },
+                ready: function() {
+                    this.switchPhoneScreen();
+                }
             });
-
         </script>
 
     </polymer-element>
 
-    <start-page ></start-page>
-
-    %{--<script>--}%
-        %{--function generateBg() {--}%
-            %{--var t = new Trianglify({x_gradient: ["#673ab7", "#8259C8", "#4F1AAC"]});--}%
-            %{--var pattern = t.generate(document.body.clientWidth, height());--}%
-            %{--document.body.setAttribute('style', 'background-image: ' + pattern.dataUrl);--}%
-        %{--}--}%
-
-        %{--function height() {--}%
-            %{--return Math.max(--}%
-                    %{--document.body.scrollHeight, document.documentElement.scrollHeight,--}%
-                    %{--document.body.offsetHeight, document.documentElement.offsetHeight,--}%
-                    %{--document.body.clientHeight, document.documentElement.clientHeight--}%
-            %{--);--}%
-        %{--}--}%
-
-    %{--</script>--}%
+    <start-page />
 
 </body>
 </html>
