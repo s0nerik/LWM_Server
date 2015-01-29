@@ -23,6 +23,7 @@
     <asset:javascript src="trianglify/trianglify.min.js" />
 
     <asset:stylesheet src="home.css"/>
+    <asset:stylesheet src="animate.css"/>
 
     <link href='http://fonts.googleapis.com/css?family=Leckerli+One' rel='stylesheet' type='text/css' />
     <link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css' />
@@ -67,12 +68,12 @@
                 width: 400px;
                 /*background-color: rgb(238, 238, 238);*/
             }
-            #p {
+            #title {
                 font-family: 'Leckerli One', cursive;
                 font-size: 50pt;
                 color: rgb(103, 58, 183);
             }
-            #p1 {
+            #subtitle {
                 font-family: 'Noto Sans', sans-serif;
                 font-size: 18pt;
                 color: rgb(0, 0, 0);
@@ -89,25 +90,25 @@
             </style>
             <section id="section" vertical layout center center-justified fullbleed>
                 <section id="section1" horizontal layout center-justified center>
-                    <core-animated-pages id="core_animated_pages" transitions="cross-fade-all" notap >
+                    <core-animated-pages id="core_animated_pages" transitions="cross-fade-all" notap class="animated fadeInLeft" >
                         <section id="screen0" active vertical layout center-justified>
-                            <asset:image src="device-0-framed.png" width="400px" />
+                            <asset:image src="device-0-framed-400px.png" width="400px" />
                         </section>
                         <section id="screen1" vertical layout center-justified>
-                            <asset:image src="device-1-framed.png" width="400px" />
+                            <asset:image src="device-1-framed-400px.png" width="400px" />
                         </section>
                         <section id="screen2" vertical layout center-justified>
-                            <asset:image src="device-2-framed.png" width="400px" />
+                            <asset:image src="device-2-framed-400px.png" width="400px" />
                         </section>
                     </core-animated-pages>
                     <section id="section5" vertical layout center center-justified>
-                        <asset:image id="img3" src="web_hi_res_512.png" width="256px" height="256px" />
+                        <asset:image id="img3" src="web_hi_res_256px.png" width="256px" height="256px" class="animated bounceInDown" />
                         <section id="section6" vertical layout center center-justified>
-                            <section id="p">Listen With Me!</section>
-                            <section id="p1">Your local Wi-Fi radio</section>
+                            <section id="title" class="animated bounceInRight">Listen With Me!</section>
+                            <section id="subtitle" class="animated bounceInUp">Your local Wi-Fi radio</section>
                         </section>
-                        <a id="a" href="https://play.google.com/store/apps/details?id=com.lwm.app">
-                            <img id="img4" alt="Get it on Google Play" src="https://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
+                        <a id="a" href="https://play.google.com/store/apps/details?id=com.lwm.app" class="animated fadeInRight">
+                            <asset:image id="img4" alt="Get it on Google Play" src="en_generic_rgb_wo_60.png" />
                         </a>
                     </section>
                 </section>
@@ -117,13 +118,17 @@
         <script>
             Polymer({
                 switchPhoneScreen: function () {
-                    var p = this.shadowRoot.querySelector('#core_animated_pages');
+
+//                    // Both methods work
+//                    var p = this.shadowRoot.querySelector('#core_animated_pages');
+                    var p = this.$.core_animated_pages;
+
                     p.selected += 1;
                     p.selected = p.selected % 3;
                     this.async(this.switchPhoneScreen, null, 1000);
                 },
                 ready: function() {
-                    this.switchPhoneScreen();
+                    this.async(this.switchPhoneScreen, null, 1000);
                 }
             });
         </script>
