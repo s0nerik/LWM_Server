@@ -23,7 +23,7 @@
     <asset:javascript src="trianglify/trianglify.min.js" />
 
     <asset:stylesheet src="home.css"/>
-    <asset:stylesheet src="animate.css"/>
+    <asset:stylesheet src="animate.css/animate.min.css"/>
 
     <link href='http://fonts.googleapis.com/css?family=Leckerli+One' rel='stylesheet' type='text/css' />
     <link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css' />
