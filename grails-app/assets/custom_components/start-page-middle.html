@@ -1,0 +1,97 @@
+<link rel="import" href="/assets/polymer/polymer.html" />
+<link rel="import" href="/assets/core-animated-pages/core-animated-pages.html" />
+
+<link href='http://fonts.googleapis.com/css?family=Leckerli+One' rel='stylesheet' type='text/css' />
+<link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css' />
+
+<polymer-element name="start-page-middle">
+
+    <template>
+        <link rel="stylesheet" href="/assets/animate.css/animate.min.css"/>
+        <link rel="stylesheet" href="/assets/anim_timings.css"/>
+        <style>
+        :host {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+        }
+        #section {
+            left: 0px;
+            top: 0px;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        #core_animated_pages {
+            overflow: hidden;
+            height: 100vh;
+            width: 400px;
+            /*background-color: rgb(238, 238, 238);*/
+        }
+        #title {
+            font-family: 'Leckerli One', cursive;
+            font-size: 50pt;
+            color: rgb(103, 58, 183);
+        }
+        #subtitle {
+            font-family: 'Noto Sans', sans-serif;
+            font-size: 18pt;
+            color: rgb(0, 0, 0);
+        }
+        #section5 {
+            padding: 24px;
+        }
+        #section1 {
+            padding: 60px;
+        }
+        #a {
+            padding: 40px;
+        }
+        </style>
+        <section id="section" vertical layout center center-justified fullbleed>
+            <section id="section1" horizontal layout center-justified center>
+                <core-animated-pages id="core_animated_pages" transitions="cross-fade-all" notap class="delayed0_75 animated fadeInLeft" >
+                    <section id="screen0" active vertical layout center-justified>
+                        <img src="/assets/device-0-framed-400px.png" width="400px" />
+                    </section>
+                    <section id="screen1" vertical layout center-justified>
+                        <img src="/assets/device-1-framed-400px.png" width="400px" />
+                    </section>
+                    <section id="screen2" vertical layout center-justified>
+                        <img src="/assets/device-2-framed-400px.png" width="400px" />
+                    </section>
+                </core-animated-pages>
+                <section id="section5" vertical layout center center-justified>
+                    <img id="img3" src="/assets/web_hi_res_256px.png" width="256px" height="256px" class="delayed0_25 animated bounceInDown" />
+                    <section id="section6" vertical layout center center-justified>
+                        <section id="title" class="delayed0_5 animated bounceInRight">Listen With Me!</section>
+                        <section id="subtitle" class="delayed0_75 animated bounceInUp">Your local Wi-Fi radio</section>
+                    </section>
+                    <a id="a" href="https://play.google.com/store/apps/details?id=com.lwm.app" class="delayed1 animated zoomInUp">
+                        <img id="img4" alt="Get it on Google Play" src="/assets/en_generic_rgb_wo_60.png" />
+                    </a>
+                </section>
+            </section>
+        </section>
+    </template>
+
+    <script>
+        Polymer({
+            switchPhoneScreen: function () {
+
+//                    // Both methods work
+//                    var p = this.shadowRoot.querySelector('#core_animated_pages');
+                var p = this.$.core_animated_pages;
+
+                p.selected += 1;
+                p.selected = p.selected % 3;
+                this.async(this.switchPhoneScreen, null, 1000);
+            },
+            ready: function() {
+                this.async(this.switchPhoneScreen, null, 1000);
+            }
+        });
+    </script>
+
+</polymer-element>
