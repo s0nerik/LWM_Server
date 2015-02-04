@@ -31,6 +31,19 @@
         </span>
     </span>
 
+    <div>
+        <sec:ifLoggedIn>
+            Welcome <sec:username />!
+        </sec:ifLoggedIn>
+        <sec:ifNotLoggedIn>
+            <oauth:connect provider="google" id="google-connect-link">Google</oauth:connect>
+        </sec:ifNotLoggedIn>
+
+        Logged with google?
+        <s2o:ifLoggedInWith provider="google">yes</s2o:ifLoggedInWith>
+        <s2o:ifNotLoggedInWith provider="google">no</s2o:ifNotLoggedInWith>
+    </div>
+
     <start-page-middle />
 
 </body>
