@@ -1,22 +1,51 @@
 package lwm_server
 
-import security.SecUser
+class User {
 
-class User extends SecUser {
+    transient springSecurityService
 
     String name
     String avatar_url
 
-    static hasMany = [songs: Song, playbackHistory: PlaybackHistoryItem]
+    String username
+    String password
+    boolean enabled = true
+    boolean accountExpired
+    boolean accountLocked
+    boolean passwordExpired
+
+    static hasMany = [OAuthIDs: OAuthID]
+
+    static transients = ['springSecurityService']
 
     static constraints = {
+        username blank: false, unique: true
+        password blank: false
+
         name size: 2..50, blank: true, nullable: true
-        password size: 8..20, blank: false
         avatar_url nullable: true
     }
 
     static mapping = {
         table 'users'
+        password column: '`password`'
     }
 
+    Set<Role> getAuthorities() {
+        UserRole.findAllByUser(this).collect { it.role }
+    }
+
+    def beforeInsert() {
+        encodePassword()
+    }
+
+    def beforeUpdate() {
+        if (isDirty('password')) {
+            encodePassword()
+        }
+    }
+
+    protected void encodePassword() {
+        password = springSecurityService?.passwordEncoder ? springSecurityService.encodePassword(password) : password
+    }
 }

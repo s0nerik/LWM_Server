@@ -118,14 +118,17 @@ log4j.main = {
            'net.sf.ehcache.hibernate'
 }
 
-// Added by the Spring Security Core plugin:
+// Added by the Spring Security + OAuth configuration:
 grails.plugin.springsecurity.userLookup.userDomainClassName = 'lwm_server.User'
-grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'security.SecUserSecRole'
+grails.plugin.springsecurity.authority.className = 'lwm_server.Role'
+grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'lwm_server.UserRole'
+grails.plugin.springsecurity.oauth.domainClass = 'lwm_server.OAuthID'
 
-// Use 'email' instead of 'username' to login
-grails.plugin.springsecurity.userLookup.usernamePropertyName = 'email'
+//// Use 'email' instead of 'username' to login
+//grails.plugin.springsecurity.userLookup.usernamePropertyName = 'email'
 
-grails.plugin.springsecurity.authority.className = 'security.SecRole'
+// IDK Why, but OAuth works only with interceptUrlMap, but not with staticRules
+grails.plugin.springsecurity.securityConfigType = 'InterceptUrlMap'
 grails.plugin.springsecurity.interceptUrlMap = [
         '/':                              ['permitAll'],
         '/index':                         ['permitAll'],
@@ -141,21 +144,6 @@ grails.plugin.springsecurity.interceptUrlMap = [
         '/oauth/**':                      ['permitAll']
 ]
 
-//grails.plugin.springsecurity.controllerAnnotations.staticRules = [
-//	'/':                              ['permitAll'],
-//	'/index':                         ['permitAll'],
-//	'/index.gsp':                     ['permitAll'],
-//	'/assets/**':                     ['permitAll'],
-//	'/**/js/**':                      ['permitAll'],
-//	'/**/css/**':                     ['permitAll'],
-//	'/**/images/**':                  ['permitAll'],
-//	'/**/favicon.ico':                ['permitAll'],
-//
-//    '/login/**':                      ['permitAll'],
-//    '/logout/**':                     ['permitAll'],
-//    '/oauth/**':                      ['permitAll']
-//]
-
 def baseURL = grails.serverURL ?: "http://127.0.0.1:${System.getProperty('server.port', '8080')}"
 
 // OAuth (Google+)
@@ -168,12 +156,6 @@ oauth {
             secret = System.env['OAUTH_GOOGLE_SECRET']
             successUri = '/oauth/google/success'
             failureUri = '/oauth/google/error'
-//            successUri = '/oauthCallback/googleSuccess'
-//            failureUri = '/oauthCallback/googleError'
-
-//            successUri = '/'
-//            failureUri = '/'
-
             callback = "${baseURL}/oauth/google/callback"
             scope = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email'
         }
@@ -182,9 +164,5 @@ oauth {
 
 //grails.google.api.url="https://www.googleapis.com/oauth2/v1/userinfo"
 
-// Added by the Spring Security OAuth plugin:
-grails.plugin.springsecurity.oauth.domainClass = 'security.OAuthID'
-
-grails.plugin.springsecurity.securityConfigType = 'InterceptUrlMap'
 //Allow logout with a GET request
 grails.plugin.springsecurity.logout.postOnly = false

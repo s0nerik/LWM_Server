@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package security
+package lwm_server
 /**
  * Simple domain class that records the identities of users authenticating via
  * an OAuth provider. Each identity consists of the OAuth account name and the
@@ -25,7 +25,7 @@ class OAuthID implements Serializable {
     String provider
     String accessToken
 
-    static belongsTo = [user: SecUser]
+    static belongsTo = [user: User]
 
     static constraints = {
         accessToken unique: true

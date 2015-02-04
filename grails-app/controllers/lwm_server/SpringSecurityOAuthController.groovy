@@ -16,13 +16,10 @@
 package lwm_server
 import grails.plugin.springsecurity.SpringSecurityUtils
 import grails.plugin.springsecurity.oauth.OAuthToken
+import grails.plugin.springsecurity.userdetails.GormUserDetailsService
 import grails.plugin.springsecurity.userdetails.GrailsUser
 import org.springframework.security.core.authority.GrantedAuthorityImpl
 import org.springframework.security.core.context.SecurityContextHolder
-import security.OAuthID
-import security.SecRole
-import security.SecUser
-import security.SecUserSecRole
 
 /**
  * Simple helper controller for handling OAuth authentication and integrating it
@@ -84,12 +81,12 @@ class SpringSecurityOAuthController {
 
     def askToLinkOrCreateAccount = {
         if (springSecurityService.loggedIn) {
-            def currentSecUser = springSecurityService.currentSecUser
+            def currentUser = springSecurityService.currentUser
             OAuthToken oAuthToken = session[SPRING_SECURITY_OAUTH_TOKEN]
             assert oAuthToken, "There is no auth token in the session!"
-            currentSecUser.addToOAuthIDs(provider: oAuthToken.providerName, accessToken: oAuthToken.socialId, user: currentSecUser)
-            if (currentSecUser.validate() && currentSecUser.save()) {
-                oAuthToken = updateOAuthToken(oAuthToken, currentSecUser)
+            currentUser.addToOAuthIDs(provider: oAuthToken.providerName, accessToken: oAuthToken.socialId, user: currentUser)
+            if (currentUser.validate() && currentUser.save()) {
+                oAuthToken = updateOAuthToken(oAuthToken, currentUser)
                 authenticateAndRedirect(oAuthToken, defaultTargetUrl)
                 return
             }
@@ -105,8 +102,8 @@ class SpringSecurityOAuthController {
         assert oAuthToken, "There is no auth token in the session!"
 
         if (request.post) {
-            boolean linked = command.validate() && SecUser.withTransaction { status ->
-                SecUser user = SecUser.findBySecUsernameAndPassword(
+            boolean linked = command.validate() && User.withTransaction { status ->
+                User user = User.findByUsernameAndPassword(
                         command.username, springSecurityService.encodePassword(command.password))
                 if (user) {
                     user.addToOAuthIDs(provider: oAuthToken.providerName, accessToken: oAuthToken.socialId, user: user)
@@ -140,11 +137,11 @@ class SpringSecurityOAuthController {
             if (!springSecurityService.loggedIn) {
                 def config = SpringSecurityUtils.securityConfig
 
-                boolean created = command.validate() && SecUser.withTransaction { status ->
-                    SecUser user = new SecUser(username: command.username, password: command.password1, enabled: true)
+                boolean created = command.validate() && User.withTransaction { status ->
+                    User user = new User(username: command.username, password: command.password1, enabled: true)
                     user.addToOAuthIDs(provider: oAuthToken.providerName, accessToken: oAuthToken.socialId, user: user)
 
-                    // updateSecUser(user, oAuthToken)
+                    // updateUser(user, oAuthToken)
 
                     if (!user.validate() || !user.save()) {
                         status.setRollbackOnly()
@@ -152,7 +149,7 @@ class SpringSecurityOAuthController {
                     }
 
                     for (roleName in config.oauth.registration.roleNames) {
-                        SecUserSecRole.create user, SecRole.findByAuthority(roleName)
+                        UserRole.create user, Role.findByAuthority(roleName)
                     }
 
                     oAuthToken = updateOAuthToken(oAuthToken, user)
@@ -188,7 +185,7 @@ class SpringSecurityOAuthController {
         return oAuthToken
     }
 
-    protected OAuthToken updateOAuthToken(OAuthToken oAuthToken, SecUser user) {
+    protected OAuthToken updateOAuthToken(OAuthToken oAuthToken, User user) {
         def conf = SpringSecurityUtils.securityConfig
 
         // user
@@ -215,7 +212,7 @@ class SpringSecurityOAuthController {
         def authorities = userAuthorities.collect { new GrantedAuthorityImpl(it."${authorityPropertyName}") }
 
         oAuthToken.principal = new GrailsUser(username, password, enabled, !accountExpired, !passwordExpired,
-                !accountLocked, authorities ?: [GormSecUserDetailsService.NO_ROLE], user.id)
+                !accountLocked, authorities ?: [GormUserDetailsService.NO_ROLE], user.id)
         oAuthToken.authorities = authorities
         oAuthToken.authenticated = true
 
@@ -223,7 +220,7 @@ class SpringSecurityOAuthController {
     }
 
 /*
-    private def updateSecUser(SecUser user, OAuthToken oAuthToken) {
+    private def updateUser(User user, OAuthToken oAuthToken) {
         if (!user.validate()) {
             return
         }
@@ -351,8 +348,8 @@ class OAuthCreateAccountCommand {
 
     static constraints = {
         username blank: false, validator: { String username, command ->
-            SecUser.withNewSession { session ->
-                if (username && SecUser.countBySecUsername(username)) {
+            User.withNewSession { session ->
+                if (username && User.countByUsername(username)) {
                     return 'OAuthCreateAccountCommand.username.error.unique'
                 }
             }
