@@ -8,9 +8,8 @@
 	<link rel="apple-touch-icon" href="${assetPath(src: 'apple-touch-icon.png')}">
 	<link rel="apple-touch-icon" sizes="114x114" href="${assetPath(src: 'apple-touch-icon-retina.png')}">
 
-	<script src="../bower_components/webcomponentsjs/webcomponents.js"></script>
-
-	<link rel="import" href="../bower_components/polymer/polymer.html">
+    <asset:link rel="import" href="polymer/polymer.html" />
+    <asset:javascript src="webcomponentsjs/webcomponents.min.js" />
 
 	<asset:stylesheet src="application.css"/>
 	<asset:javascript src="application.js"/>

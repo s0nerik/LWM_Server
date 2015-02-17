@@ -20,7 +20,6 @@ import grails.plugin.springsecurity.userdetails.GormUserDetailsService
 import grails.plugin.springsecurity.userdetails.GrailsUser
 import org.springframework.security.core.authority.GrantedAuthorityImpl
 import org.springframework.security.core.context.SecurityContextHolder
-
 /**
  * Simple helper controller for handling OAuth authentication and integrating it
  * into Spring Security.
@@ -138,7 +137,11 @@ class SpringSecurityOAuthController {
                 def config = SpringSecurityUtils.securityConfig
 
                 boolean created = command.validate() && User.withTransaction { status ->
-                    User user = new User(username: command.username, password: command.password1, enabled: true)
+                    User user = new User(
+                            username: command.username,
+                            password: command.password1,
+                            enabled: true
+                    )
                     user.addToOAuthIDs(provider: oAuthToken.providerName, accessToken: oAuthToken.socialId, user: user)
 
                     // updateUser(user, oAuthToken)
@@ -224,17 +227,14 @@ class SpringSecurityOAuthController {
         if (!user.validate()) {
             return
         }
-
         if (oAuthToken instanceof TwitterOAuthToken) {
             TwitterOAuthToken twitterOAuthToken = (TwitterOAuthToken) oAuthToken
-
             if (!user.username) {
                 user.username = twitterOAuthToken.twitterProfile.screenName
                 if (!user.validate()) {
                     user.username = null
                 }
             }
-
             if (!user.firstName || !user.lastName) {
                 def names = twitterOAuthToken.twitterProfile.name?.split(' ')
                 if (names) {
@@ -244,7 +244,6 @@ class SpringSecurityOAuthController {
                             user.lastName = null
                         }
                     }
-
                     if (!user.firstName) {
                         user.firstName = names[-1]
                         if (!user.validate()) {
@@ -255,28 +254,24 @@ class SpringSecurityOAuthController {
             }
         } else if (oAuthToken instanceof FacebookOAuthToken) {
             FacebookOAuthToken facebookOAuthToken = (FacebookOAuthToken) oAuthToken
-
             if (!user.username) {
                 user.username = facebookOAuthToken.facebookProfile.username
                 if (!user.validate()) {
                     user.username = null
                 }
             }
-
             if (!user.email) {
                 user.email = facebookOAuthToken.facebookProfile.email
                 if (!user.validate()) {
                     user.email = null
                 }
             }
-
             if (!user.lastName) {
                 user.lastName = facebookOAuthToken.facebookProfile.lastName
                 if (!user.validate()) {
                     user.lastName = null
                 }
             }
-
             if (!user.firstName) {
                 user.firstName = facebookOAuthToken.facebookProfile.firstName
                 if (!user.validate()) {
@@ -285,7 +280,6 @@ class SpringSecurityOAuthController {
             }
         } else if (oAuthToken instanceof GoogleOAuthToken) {
             GoogleOAuthToken googleOAuthToken = (GoogleOAuthToken) oAuthToken
-
             if (!user.email) {
                 user.email = googleOAuthToken.email
                 if (!user.validate()) {
@@ -294,21 +288,18 @@ class SpringSecurityOAuthController {
             }
         } else if (oAuthToken instanceof YahooOAuthToken) {
             YahooOAuthToken yahooOAuthToken = (YahooOAuthToken) oAuthToken
-
             if (!user.username) {
                 user.username = yahooOAuthToken.profile.nickname
                 if (!user.validate()) {
                     user.username = null
                 }
             }
-
             if (!user.lastName) {
                 user.lastName = yahooOAuthToken.profile.familyName
                 if (!user.validate()) {
                     user.lastName = null
                 }
             }
-
             if (!user.firstName) {
                 user.firstName = yahooOAuthToken.profile.givenName
                 if (!user.validate()) {

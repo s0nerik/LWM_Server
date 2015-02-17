@@ -34,6 +34,10 @@
     <div>
         <sec:ifLoggedIn>
             Welcome <sec:username />!
+            <div>
+                <oauth:connected provider="google" />
+                %{--<sec:loggedInUserInfo field="principal" />--}%
+            </div>
         </sec:ifLoggedIn>
         <sec:ifNotLoggedIn>
             <oauth:connect provider="google" id="google-connect-link">Google</oauth:connect>

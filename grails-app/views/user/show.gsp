@@ -23,11 +23,20 @@
 			</g:if>
 			<ol class="property-list user">
 			
-				<g:if test="${userInstance?.email}">
+				<g:if test="${userInstance?.username}">
 				<li class="fieldcontain">
-					<span id="email-label" class="property-label"><g:message code="user.email.label" default="Email" /></span>
+					<span id="username-label" class="property-label"><g:message code="user.username.label" default="Username" /></span>
 					
-						<span class="property-value" aria-labelledby="email-label"><g:fieldValue bean="${userInstance}" field="email"/></span>
+						<span class="property-value" aria-labelledby="username-label"><g:fieldValue bean="${userInstance}" field="username"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${userInstance?.password}">
+				<li class="fieldcontain">
+					<span id="password-label" class="property-label"><g:message code="user.password.label" default="Password" /></span>
+					
+						<span class="property-value" aria-labelledby="password-label"><g:fieldValue bean="${userInstance}" field="password"/></span>
 					
 				</li>
 				</g:if>
@@ -41,11 +50,80 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${userInstance?.password}">
+				<g:if test="${userInstance?.avatar_url}">
 				<li class="fieldcontain">
-					<span id="password-label" class="property-label"><g:message code="user.password.label" default="Password" /></span>
+					<span id="avatar_url-label" class="property-label"><g:message code="user.avatar_url.label" default="Avatarurl" /></span>
 					
-						<span class="property-value" aria-labelledby="password-label"><g:fieldValue bean="${userInstance}" field="password"/></span>
+						<span class="property-value" aria-labelledby="avatar_url-label"><g:fieldValue bean="${userInstance}" field="avatar_url"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${userInstance?.OAuthIDs}">
+				<li class="fieldcontain">
+					<span id="OAuthIDs-label" class="property-label"><g:message code="user.OAuthIDs.label" default="OA uth ID s" /></span>
+					
+						<g:each in="${userInstance.OAuthIDs}" var="O">
+						<span class="property-value" aria-labelledby="OAuthIDs-label"><g:link controller="OAuthID" action="show" id="${O.id}">${O?.encodeAsHTML()}</g:link></span>
+						</g:each>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${userInstance?.accountExpired}">
+				<li class="fieldcontain">
+					<span id="accountExpired-label" class="property-label"><g:message code="user.accountExpired.label" default="Account Expired" /></span>
+					
+						<span class="property-value" aria-labelledby="accountExpired-label"><g:formatBoolean boolean="${userInstance?.accountExpired}" /></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${userInstance?.accountLocked}">
+				<li class="fieldcontain">
+					<span id="accountLocked-label" class="property-label"><g:message code="user.accountLocked.label" default="Account Locked" /></span>
+					
+						<span class="property-value" aria-labelledby="accountLocked-label"><g:formatBoolean boolean="${userInstance?.accountLocked}" /></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${userInstance?.enabled}">
+				<li class="fieldcontain">
+					<span id="enabled-label" class="property-label"><g:message code="user.enabled.label" default="Enabled" /></span>
+					
+						<span class="property-value" aria-labelledby="enabled-label"><g:formatBoolean boolean="${userInstance?.enabled}" /></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${userInstance?.passwordExpired}">
+				<li class="fieldcontain">
+					<span id="passwordExpired-label" class="property-label"><g:message code="user.passwordExpired.label" default="Password Expired" /></span>
+					
+						<span class="property-value" aria-labelledby="passwordExpired-label"><g:formatBoolean boolean="${userInstance?.passwordExpired}" /></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${userInstance?.playbackHistory}">
+				<li class="fieldcontain">
+					<span id="playbackHistory-label" class="property-label"><g:message code="user.playbackHistory.label" default="Playback History" /></span>
+					
+						<g:each in="${userInstance.playbackHistory}" var="p">
+						<span class="property-value" aria-labelledby="playbackHistory-label"><g:link controller="playbackHistoryItem" action="show" id="${p.id}">${p?.encodeAsHTML()}</g:link></span>
+						</g:each>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${userInstance?.songs}">
+				<li class="fieldcontain">
+					<span id="songs-label" class="property-label"><g:message code="user.songs.label" default="Songs" /></span>
+					
+						<g:each in="${userInstance.songs}" var="s">
+						<span class="property-value" aria-labelledby="songs-label"><g:link controller="song" action="show" id="${s.id}">${s?.encodeAsHTML()}</g:link></span>
+						</g:each>
 					
 				</li>
 				</g:if>

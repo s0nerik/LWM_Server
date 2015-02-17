@@ -6,6 +6,7 @@ class User {
 
     String name
     String avatar_url
+    String email
 
     String username
     String password
@@ -14,7 +15,7 @@ class User {
     boolean accountLocked
     boolean passwordExpired
 
-    static hasMany = [OAuthIDs: OAuthID]
+    static hasMany = [OAuthIDs: OAuthID, songs: Song, playbackHistory: PlaybackHistoryItem]
 
     static transients = ['springSecurityService']
 
@@ -22,6 +23,7 @@ class User {
         username blank: false, unique: true
         password blank: false
 
+        email blank: false, unique: true
         name size: 2..50, blank: true, nullable: true
         avatar_url nullable: true
     }
