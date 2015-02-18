@@ -14,41 +14,39 @@
 
     <asset:link rel="import"  href="start-page-middle.html"/>
 
-    <script src="https://apis.google.com/js/client:platform.js" async defer></script>
+    <style>
+        .google-btn {
+            float: right;
+            position: relative;
+            z-index: 1;
+            margin: 24px;
+            width: 246px;
+            height: 54px;
+            display: block;
+            background: url("/assets/google_sign_in.png") no-repeat 0 0;
+        }
+        .google-btn :hover {
+            background-position: 0px -64px;
+        }
+        .google-btn :active {
+            background-position: 0px -128px;
+        }
+    </style>
 
 </head>
 
 <body fullbleed="" class="no-scrollbars" >
 
-    <span id="signinButton" style="float: right; padding: 24px;" class="animated bounceInDown delayed2_25">
-        <span
-                class="g-signin"
-                data-callback="signinCallback"
-                data-clientid="CLIENT_ID"
-                data-cookiepolicy="single_host_origin"
-                data-requestvisibleactions="http://schema.org/AddAction"
-                data-scope="https://www.googleapis.com/auth/plus.login">
-        </span>
-    </span>
+    %{--<sec:ifLoggedIn>--}%
+    %{--<oauth:connected provider="google" />--}%
+    %{--<s2o:ifLoggedInWith provider="google"></s2o:ifLoggedInWith>--}%
+    %{--<s2o:ifNotLoggedInWith provider="google"></s2o:ifNotLoggedInWith>--}%
 
-    <div>
-        <sec:ifLoggedIn>
-            Welcome <sec:username />!
-            <div>
-                <oauth:connected provider="google" />
-                %{--<sec:loggedInUserInfo field="principal" />--}%
-            </div>
-        </sec:ifLoggedIn>
-        <sec:ifNotLoggedIn>
-            <oauth:connect provider="google" id="google-connect-link">Google</oauth:connect>
-        </sec:ifNotLoggedIn>
+    <sec:ifNotLoggedIn>
+        <oauth:connect provider="google" id="google-connect-link" class="google-btn animated bounceInDown delayed2_25" />
+    </sec:ifNotLoggedIn>
 
-        Logged with google?
-        <s2o:ifLoggedInWith provider="google">yes</s2o:ifLoggedInWith>
-        <s2o:ifNotLoggedInWith provider="google">no</s2o:ifNotLoggedInWith>
-    </div>
-
-    <start-page-middle />
+    <start-page-middle id="middle" />
 
 </body>
 </html>

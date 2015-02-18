@@ -143,8 +143,6 @@ grails.plugin.springsecurity.interceptUrlMap = [
         '/login/**':                      ['permitAll'],
         '/logout/**':                     ['permitAll'],
         '/oauth/**':                      ['permitAll'],
-
-        '/user/**': ['permitAll']
 ]
 
 def baseURL = grails.serverURL ?: "http://127.0.0.1:${System.getProperty('server.port', '8080')}"
