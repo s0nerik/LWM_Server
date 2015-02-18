@@ -123,6 +123,7 @@ grails.plugin.springsecurity.userLookup.userDomainClassName = 'lwm_server.User'
 grails.plugin.springsecurity.authority.className = 'lwm_server.Role'
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'lwm_server.UserRole'
 grails.plugin.springsecurity.oauth.domainClass = 'lwm_server.OAuthID'
+//grails.plugin.springsecurity.oauth.registration.linkOrCreateAccountUri = 'lwm_server.OAuthID'
 
 //// Use 'email' instead of 'username' to login
 //grails.plugin.springsecurity.userLookup.usernamePropertyName = 'email'
@@ -141,7 +142,9 @@ grails.plugin.springsecurity.interceptUrlMap = [
 
         '/login/**':                      ['permitAll'],
         '/logout/**':                     ['permitAll'],
-        '/oauth/**':                      ['permitAll']
+        '/oauth/**':                      ['permitAll'],
+
+        '/user/**': ['permitAll']
 ]
 
 def baseURL = grails.serverURL ?: "http://127.0.0.1:${System.getProperty('server.port', '8080')}"

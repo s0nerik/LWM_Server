@@ -6,7 +6,9 @@ class User {
 
     String name
     String avatar_url
+    String profile_url
     String email
+    String googleID
 
     String username
     String password
@@ -20,9 +22,10 @@ class User {
     static transients = ['springSecurityService']
 
     static constraints = {
-        username blank: false, unique: true
-        password blank: false
+        username blank: false, unique: false
+        password blank: true, nullable: true
 
+        googleID blank: false, unique: true
         email blank: false, unique: true
         name size: 2..50, blank: true, nullable: true
         avatar_url nullable: true

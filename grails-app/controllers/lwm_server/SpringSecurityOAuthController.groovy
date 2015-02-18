@@ -79,97 +79,68 @@ class SpringSecurityOAuthController {
     }
 
     def askToLinkOrCreateAccount = {
+        OAuthToken oAuthToken = session[SPRING_SECURITY_OAUTH_TOKEN]
+        assert oAuthToken, "There is no auth token in the session!"
+
         if (springSecurityService.loggedIn) {
             def currentUser = springSecurityService.currentUser
-            OAuthToken oAuthToken = session[SPRING_SECURITY_OAUTH_TOKEN]
-            assert oAuthToken, "There is no auth token in the session!"
             currentUser.addToOAuthIDs(provider: oAuthToken.providerName, accessToken: oAuthToken.socialId, user: currentUser)
             if (currentUser.validate() && currentUser.save()) {
                 oAuthToken = updateOAuthToken(oAuthToken, currentUser)
                 authenticateAndRedirect(oAuthToken, defaultTargetUrl)
                 return
             }
-        }
-    }
+        } else {
+            def config = SpringSecurityUtils.securityConfig
 
-    /**
-     * Associates an OAuthID with an existing account. Needs the user's password to ensure
-     * that the user owns that account, and authenticates to verify before linking.
-     */
-    def linkAccount = { OAuthLinkAccountCommand command ->
-        OAuthToken oAuthToken = session[SPRING_SECURITY_OAUTH_TOKEN]
-        assert oAuthToken, "There is no auth token in the session!"
+            boolean createdOrUpdated = User.withTransaction { status ->
+                User user = User.findByGoogleID(oAuthToken.user["id"] as String)
 
-        if (request.post) {
-            boolean linked = command.validate() && User.withTransaction { status ->
-                User user = User.findByUsernameAndPassword(
-                        command.username, springSecurityService.encodePassword(command.password))
-                if (user) {
-                    user.addToOAuthIDs(provider: oAuthToken.providerName, accessToken: oAuthToken.socialId, user: user)
-                    if (user.validate() && user.save()) {
-                        oAuthToken = updateOAuthToken(oAuthToken, user)
-                        return true
-                    }
-                } else {
-                    command.errors.rejectValue("username", "OAuthLinkAccountCommand.username.not.exists")
+                if (!user) {
+                    user = new User(
+                            username: oAuthToken.user["name"],
+                            password: getRandomString(),
+                            email: oAuthToken.user["email"],
+                            profile_url: oAuthToken.user["link"],
+                            name: oAuthToken.user["name"],
+                            avatar_url: oAuthToken.user["picture"],
+                            googleID: oAuthToken.user["id"],
+
+                            enabled: true
+                    )
+                }
+                user.addToOAuthIDs(provider: oAuthToken.providerName, accessToken: oAuthToken.socialId, user: user)
+
+                // updateUser(user, oAuthToken)
+
+                if (!user.validate() || !user.save()) {
+                    status.setRollbackOnly()
+                    return false
                 }
 
-                status.setRollbackOnly()
-                return false
+                for (roleName in config.oauth.registration.roleNames) {
+                    UserRole.create user, Role.findByAuthority(roleName)
+                }
+
+                oAuthToken = updateOAuthToken(oAuthToken, user)
+                return true
             }
 
-            if (linked) {
+            if (createdOrUpdated) {
                 authenticateAndRedirect(oAuthToken, defaultTargetUrl)
                 return
             }
         }
-
-        render view: 'askToLinkOrCreateAccount', model: [linkAccountCommand: command]
-        return
-    }
-
-    def createAccount = { OAuthCreateAccountCommand command ->
-        OAuthToken oAuthToken = session[SPRING_SECURITY_OAUTH_TOKEN]
-        assert oAuthToken, "There is no auth token in the session!"
-
-        if (request.post) {
-            if (!springSecurityService.loggedIn) {
-                def config = SpringSecurityUtils.securityConfig
-
-                boolean created = command.validate() && User.withTransaction { status ->
-                    User user = new User(
-                            username: command.username,
-                            password: command.password1,
-                            enabled: true
-                    )
-                    user.addToOAuthIDs(provider: oAuthToken.providerName, accessToken: oAuthToken.socialId, user: user)
-
-                    // updateUser(user, oAuthToken)
-
-                    if (!user.validate() || !user.save()) {
-                        status.setRollbackOnly()
-                        return false
-                    }
-
-                    for (roleName in config.oauth.registration.roleNames) {
-                        UserRole.create user, Role.findByAuthority(roleName)
-                    }
-
-                    oAuthToken = updateOAuthToken(oAuthToken, user)
-                    return true
-                }
-
-                if (created) {
-                    authenticateAndRedirect(oAuthToken, defaultTargetUrl)
-                    return
-                }
-            }
-        }
-
-        render view: 'askToLinkOrCreateAccount', model: [createAccountCommand: command]
     }
 
     // utils
+
+    def getRandomString() {
+        def pool = ['a'..'z','A'..'Z',0..9,'_','-','$','#','@','!','~','%','^',':','*','?'].flatten()
+
+        def passChars = (0..20).collect { pool[new Random().nextInt(pool.size())] }
+        passChars.join("")
+    }
 
     protected renderError(code, msg) {
         log.error msg + " (returning ${code})"
@@ -327,52 +298,6 @@ class SpringSecurityOAuthController {
 
         SecurityContextHolder.context.authentication = oAuthToken
         redirect(redirectUrl instanceof Map ? redirectUrl : [uri: redirectUrl])
-    }
-
-}
-
-class OAuthCreateAccountCommand {
-
-    String username
-    String password1
-    String password2
-
-    static constraints = {
-        username blank: false, validator: { String username, command ->
-            User.withNewSession { session ->
-                if (username && User.countByUsername(username)) {
-                    return 'OAuthCreateAccountCommand.username.error.unique'
-                }
-            }
-        }
-        password1 blank: false, minSize: 8, maxSize: 64, validator: { password1, command ->
-            if (command.username && command.username.equals(password1)) {
-                return 'OAuthCreateAccountCommand.password.error.username'
-            }
-
-            if (password1 && password1.length() >= 8 && password1.length() <= 64 &&
-                    (!password1.matches('^.*\\p{Alpha}.*$') ||
-                     !password1.matches('^.*\\p{Digit}.*$') ||
-                     !password1.matches('^.*[!@#$%^&].*$'))) {
-                return 'OAuthCreateAccountCommand.password.error.strength'
-            }
-        }
-        password2 nullable: true, blank: true, validator: { password2, command ->
-            if (command.password1 != password2) {
-                return 'OAuthCreateAccountCommand.password.error.mismatch'
-            }
-        }
-    }
-}
-
-class OAuthLinkAccountCommand {
-
-    String username
-    String password
-
-    static constraints = {
-        username blank: false
-        password blank: false
     }
 
 }
