@@ -282,15 +282,16 @@ class SpringSecurityOAuthController {
 */
 
     protected Map getDefaultTargetUrl() {
-        def config = SpringSecurityUtils.securityConfig
-        def savedRequest = SpringSecurityUtils.getSavedRequest(session)
-        def defaultUrlOnNull = '/'
-
-        if (savedRequest && !config.successHandler.alwaysUseDefault) {
-            return [url: (savedRequest.redirectUrl ?: defaultUrlOnNull)]
-        } else {
-            return [uri: (config.successHandler.defaultTargetUrl ?: defaultUrlOnNull)]
-        }
+        [uri: SpringSecurityUtils.securityConfig.successHandler.defaultTargetUrl ?: "/"]
+//        def config = SpringSecurityUtils.securityConfig
+//        def savedRequest = SpringSecurityUtils.getSavedRequest(session)
+//        def defaultUrlOnNull = '/'
+//
+//        if (savedRequest && !config.successHandler.alwaysUseDefault) {
+//            return [url: (savedRequest.redirectUrl ?: defaultUrlOnNull)]
+//        } else {
+//            return [uri: (config.successHandler.defaultTargetUrl ?: defaultUrlOnNull)]
+//        }
     }
 
     protected void authenticateAndRedirect(OAuthToken oAuthToken, redirectUrl) {

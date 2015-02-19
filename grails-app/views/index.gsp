@@ -35,7 +35,7 @@
 
 </head>
 
-<body fullbleed="" class="no-scrollbars" >
+<body fullbleed class="no-scrollbars" >
 
     %{--<sec:ifLoggedIn>--}%
     %{--<oauth:connected provider="google" />--}%

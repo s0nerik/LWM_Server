@@ -143,6 +143,8 @@ grails.plugin.springsecurity.interceptUrlMap = [
         '/login/**':                      ['permitAll'],
         '/logout/**':                     ['permitAll'],
         '/oauth/**':                      ['permitAll'],
+
+        '/home/**':                       ['ROLE_USER', 'ROLE_ADMIN'],
 ]
 
 def baseURL = grails.serverURL ?: "http://127.0.0.1:${System.getProperty('server.port', '8080')}"
@@ -167,3 +169,6 @@ oauth {
 
 //Allow logout with a GET request
 grails.plugin.springsecurity.logout.postOnly = false
+
+grails.plugins.springsecurity.successHandler.defaultTargetUrl = '/home'
+grails.plugins.springsecurity.successHandler.alwaysUseDefault = true
