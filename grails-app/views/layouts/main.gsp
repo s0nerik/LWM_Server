@@ -16,10 +16,9 @@
 	<g:layoutHead/>
 </head>
 
-<body fullbleed="" onload="alert(document.body.clientHeight);" >
+<body fullbleed="" >
 
 <g:layoutBody/>
-<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
 
 </body>
 
