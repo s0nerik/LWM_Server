@@ -12,11 +12,16 @@
     <asset:link rel="import" href="core-toolbar/core-toolbar.html" />
     <asset:link rel="import" href="core-item/core-item.html" />
     <asset:link rel="import" href="core-image/core-image.html" />
+    <asset:link rel="import" href="core-icons/av-icons.html" />
 
     <link href='http://fonts.googleapis.com/css?family=Leckerli+One' rel='stylesheet' type='text/css' />
     <link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css' />
 
     <style>
+        body {
+            font-family: sans-serif;
+        }
+
         .navigation_drawer_toolbar {
             background: ${colorPrimaryDark};
             color: white;
@@ -57,13 +62,16 @@
                 <span>Listen With Me!</span>
                 %{--<core-image style="width:500px; height:500px;" sizing="cover" src="${users[0].avatar_url}" />--}%
             </core-toolbar>
-            <core-menu>
-                <core-item label="One"></core-item>
-                <core-item label="Two"></core-item>
+            <core-menu fit vertical layout >
+                <core-item icon="history" label="Playback history"></core-item>
+                <core-item icon="favorite" label="Favorite songs"></core-item>
+                <core-item icon="av:queue-music" label="Playlists"></core-item>
+                <span flex></span>
+                <core-item icon="settings" label="Settings"></core-item>
             </core-menu>
         </core-header-panel>
 
-        <span style="font-family: sans-serif;" tool>Songs</span>
+        <span tool>Songs</span>
 
         <div class="content">
             <ul>
