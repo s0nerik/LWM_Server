@@ -60,33 +60,35 @@
 
 <body>
 
-    <core-scaffold>
-        <core-header-panel navigation flex mode="seamed" style="width: ${navDrawerWidth};">
-            <core-toolbar id="navheader" class="navigation_drawer_toolbar" horizontal center-justified layout >
-                <span>Listen With Me!</span>
-            </core-toolbar>
-            <div vertical layout fit>
-                <div style="height: ${navDrawerWidth};" vertical layout>
-                    <core-image style="width: ${navDrawerWidth}; height: ${navDrawerWidth};" sizing="cover" src="${user.avatar_url}" fit></core-image>
-                    <span flex></span>
-                    <p style="color: #ffffff; z-index: 1; padding-left: 16px;" class="gradient-bottom">${user.name}</p>
+    <template is="auto-binding">
+        <core-scaffold>
+            <core-header-panel navigation flex mode="seamed" style="width: ${navDrawerWidth};">
+                <core-toolbar id="navheader" class="navigation_drawer_toolbar" horizontal center-justified layout >
+                    <span>Listen With Me!</span>
+                </core-toolbar>
+                <div vertical layout fit>
+                    <div style="height: ${navDrawerWidth};" vertical layout>
+                        <core-image style="width: ${navDrawerWidth}; height: ${navDrawerWidth};" sizing="cover" src="${user.avatar_url}" fit></core-image>
+                        <span flex></span>
+                        <p style="color: #ffffff; z-index: 1; padding-left: 16px;" class="gradient-bottom">${user.name}</p>
+                    </div>
+                    <core-menu vertical layout flex selected="0" selectedItem="{{menuSelection}}">
+                        <core-item icon="history" label="Playback history"></core-item>
+                        <core-item icon="favorite" label="Favorite songs"></core-item>
+                        <core-item icon="av:queue-music" label="Playlists"></core-item>
+                        <span flex></span>
+                        <core-item icon="settings" label="Settings"></core-item>
+                    </core-menu>
                 </div>
-                <core-menu vertical layout flex>
-                    <core-item icon="history" label="Playback history"></core-item>
-                    <core-item icon="favorite" label="Favorite songs"></core-item>
-                    <core-item icon="av:queue-music" label="Playlists"></core-item>
-                    <span flex></span>
-                    <core-item icon="settings" label="Settings"></core-item>
-                </core-menu>
+            </core-header-panel>
+
+            <span tool>{{menuSelection.label}}</span>
+
+            <div class="content">
+
             </div>
-        </core-header-panel>
-
-        <span tool>Songs</span>
-
-        <div class="content">
-            ${user.avatar_url}
-        </div>
-    </core-scaffold>
+        </core-scaffold>
+    </template>
 
 </body>
 </html>
