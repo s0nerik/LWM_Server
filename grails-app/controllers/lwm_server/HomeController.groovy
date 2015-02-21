@@ -2,9 +2,11 @@ package lwm_server
 
 class HomeController {
 
+    def springSecurityService
+
     def index() {
-        def users = User.list()
-        [users: users]
+        def currentUser = springSecurityService.currentUser
+        [user: currentUser]
     }
 
 }
