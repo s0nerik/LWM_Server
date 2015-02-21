@@ -1,0 +1,39 @@
+<link rel="import" href="/assets/polymer/polymer.html" />
+<link rel="import" href="/assets/ujiro-card/ujiro-card.html" />
+<link rel="import" href="/assets/core-image/core-image.html" />
+
+<polymer-element name="song-card" extends="ujiro-card" attributes="title artist year cover_url">
+
+    <template>
+        <style>
+            :host {
+                width: 180px;
+                /*position: absolute;*/
+                /*width: 100%;*/
+                /*height: 100%;*/
+                /*box-sizing: border-box;*/
+            }
+
+            .title {
+                padding: 8px;
+            }
+            .artist {
+                padding: 8px;
+            }
+        </style>
+        <section id="cover" class="media">
+            <core-image src="{{cover_url}}" style="width:180px; height: 180px;" sizing="cover" ></core-image>
+        </section>
+        <section id="title" class="title">
+            {{title}}
+        </section>
+        <section id="artist" class="artist">
+            {{artist}}
+        </section>
+    </template>
+
+    <script>
+        Polymer();
+    </script>
+
+</polymer-element>

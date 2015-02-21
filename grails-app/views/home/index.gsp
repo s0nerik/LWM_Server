@@ -1,7 +1,36 @@
+<%@ page import="groovy.json.JsonSlurper" %>
 <%
     def colorPrimary = '#673ab7'
     def colorPrimaryDark = '#512da8'
     def navDrawerWidth = '256px'
+
+    def playbackHistory = [
+            [
+                artist: "Asking Alexandria",
+                song: "Dear Insanity",
+                cover_url: "http://ecx.images-amazon.com/images/I/41yfJvNEpRL.jpg"
+            ],
+            [
+                artist: "Asking Alexandria",
+                song: "Don't Pray For Me",
+                cover_url: "http://ecx.images-amazon.com/images/I/51z9%2BHwOAML.jpg"
+            ],
+            [
+                artist: "As I Lay Dying",
+                song: "Cauterize",
+                cover_url: "http://upload.wikimedia.org/wikipedia/en/c/cc/Aild_awakened-cover.jpg"
+            ],
+            [
+                artist: "As I Lay Dying",
+                song: "Paralyzed",
+                cover_url: "http://www.revolvermag.com/wp-content/uploads/2011/10/aild_decas.jpg"
+            ],
+            [
+                artist: "As I Lay Dying",
+                song: "Beyond Our Suffering",
+                cover_url: "http://upload.wikimedia.org/wikipedia/en/0/02/As_I_Lay_Dying_-_Powerless_Rise.jpg"
+            ],
+    ]
 %>
 
 <!DOCTYPE html>
@@ -17,6 +46,7 @@
     <asset:link rel="import" href="core-image/core-image.html" />
     <asset:link rel="import" href="core-icons/av-icons.html" />
     <asset:link rel="import" href="core-list/core-list.html" />
+    <asset:link rel="import" href="song-card.html" />
 
     <link href='http://fonts.googleapis.com/css?family=Leckerli+One' rel='stylesheet' type='text/css' />
     <link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css' />
@@ -85,6 +115,19 @@
             <span tool>{{menuSelection.label}}</span>
 
             <div class="content">
+
+                <div horizontal layout wrap style="padding: 8px;">
+                    <g:each in="${0..200}">
+                        <% def i = Math.random() * playbackHistory.size() as int; %>
+                        <song-card
+                            title="${playbackHistory[i].song}"
+                            artist="${playbackHistory[i].artist}"
+                            cover_url="${playbackHistory[i].cover_url}"
+                            style="margin: 8px;"
+                        ></song-card>
+                    </g:each>
+
+                </div>
 
             </div>
         </core-scaffold>
