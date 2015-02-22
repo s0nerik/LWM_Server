@@ -170,5 +170,7 @@ oauth {
 //Allow logout with a GET request
 grails.plugin.springsecurity.logout.postOnly = false
 
+grails.plugin.springsecurity.auth.loginFormUrl = '/oauth/google/authenticate?redirectUrl='
+
 grails.plugin.springsecurity.successHandler.defaultTargetUrl = '/home'
 grails.plugin.springsecurity.successHandler.alwaysUseDefault = true
