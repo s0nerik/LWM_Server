@@ -16,5 +16,7 @@ class IndexControllerSpec extends Specification {
     }
 
     void "test something"() {
+        expect:
+        2 == 1+1
     }
 }
