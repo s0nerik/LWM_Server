@@ -23,12 +23,13 @@ class User {
 
     static constraints = {
         username blank: false, unique: false
-        password blank: true, nullable: true
+        password blank: true, nullable: false
 
         googleID blank: false, unique: true
         email blank: false, unique: true
         name size: 2..50, blank: true, nullable: true
         avatar_url nullable: true
+        profile_url nullable: true
     }
 
     static mapping = {

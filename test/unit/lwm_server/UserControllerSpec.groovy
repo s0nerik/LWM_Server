@@ -1,6 +1,8 @@
 package lwm_server
 
 
+import static org.springframework.http.HttpStatus.*
+import grails.converters.JSON
 import grails.test.mixin.*
 import spock.lang.*
 
@@ -10,9 +12,11 @@ class UserControllerSpec extends Specification {
 
     def populateValidParams(params) {
         assert params != null
+        params["username"] = "Zbignev Bjyzinsky"
         params["name"] = "Zbignev Bjyzinsky"
         params["email"] = "bjyzinsky@gmail.com"
         params["password"] = "1234567890"
+        params["googleID"] = "1234567890"
     }
 
     void "Test the index action returns the correct model"() {
@@ -20,118 +24,71 @@ class UserControllerSpec extends Specification {
         when: "The index action is executed"
         controller.index()
 
-        then: "The model is correct"
-        !model.userInstanceList
-        model.userInstanceCount == 0
-    }
-
-    void "Test the create action returns the correct model"() {
-        when: "The create action is executed"
-        controller.create()
-
-        then: "The model is correctly created"
-        model.userInstance != null
+        then: "The response is correct"
+        response.status == OK.value
+        response.text == ([] as JSON).toString()
     }
 
     void "Test the save action correctly persists an instance"() {
 
         when: "The save action is executed with an invalid instance"
-        request.contentType = FORM_CONTENT_TYPE
-        request.method = 'POST'
+        // Make sure the domain class has at least one non-null property
+        // or this test will fail.
         def user = new User()
-        user.validate()
+        request.method = 'POST'
         controller.save(user)
 
-        then: "The create view is rendered again with the correct model"
-        model.userInstance != null
-        view == 'create'
+        then: "The response status is NOT_ACCEPTABLE"
+        response.status == NOT_ACCEPTABLE.value
 
         when: "The save action is executed with a valid instance"
         response.reset()
         populateValidParams(params)
         user = new User(params)
-
+        request.method = 'POST'
         controller.save(user)
 
-        then: "A redirect is issued to the show action"
-        response.redirectedUrl == '/user/show/1'
-        controller.flash.message != null
-        User.count() == 1
-    }
-
-    void "Test that the show action returns the correct model"() {
-        when: "The show action is executed with a null domain"
-        controller.show(null)
-
-        then: "A 404 error is returned"
-        response.status == 404
-
-        when: "A domain instance is passed to the show action"
-        populateValidParams(params)
-        def user = new User(params)
-        controller.show(user)
-
-        then: "A model is populated containing the domain instance"
-        model.userInstance == user
-    }
-
-    void "Test that the edit action returns the correct model"() {
-        when: "The edit action is executed with a null domain"
-        controller.edit(null)
-
-        then: "A 404 error is returned"
-        response.status == 404
-
-        when: "A domain instance is passed to the edit action"
-        populateValidParams(params)
-        def user = new User(params)
-        controller.edit(user)
-
-        then: "A model is populated containing the domain instance"
-        model.userInstance == user
+        then: "The response status is CREATED and the instance is returned"
+        response.status == CREATED.value
+        response.text == (user as JSON).toString()
     }
 
     void "Test the update action performs an update on a valid domain instance"() {
         when: "Update is called for a domain instance that doesn't exist"
-        request.contentType = FORM_CONTENT_TYPE
         request.method = 'PUT'
         controller.update(null)
 
-        then: "A 404 error is returned"
-        response.redirectedUrl == '/user/index'
-        flash.message != null
-
+        then: "The response status is NOT_FOUND"
+        response.status == NOT_FOUND.value
 
         when: "An invalid domain instance is passed to the update action"
         response.reset()
         def user = new User()
-        user.validate()
+        request.method = 'PUT'
         controller.update(user)
 
-        then: "The edit view is rendered again with the invalid instance"
-        view == 'edit'
-        model.userInstance == user
+        then: "The response status is NOT_ACCEPTABLE"
+        response.status == NOT_ACCEPTABLE.value
 
         when: "A valid domain instance is passed to the update action"
         response.reset()
         populateValidParams(params)
         user = new User(params).save(flush: true)
+        request.method = 'PUT'
         controller.update(user)
 
-        then: "A redirect is issues to the show action"
-        response.redirectedUrl == "/user/show/$user.id"
-        flash.message != null
+        then: "The response status is OK and the updated instance is returned"
+        response.status == OK.value
+        response.text == (user as JSON).toString()
     }
 
     void "Test that the delete action deletes an instance if it exists"() {
         when: "The delete action is called for a null instance"
-        request.contentType = FORM_CONTENT_TYPE
         request.method = 'DELETE'
         controller.delete(null)
 
-        then: "A 404 is returned"
-        response.redirectedUrl == '/user/index'
-        flash.message != null
+        then: "A NOT_FOUND is returned"
+        response.status == NOT_FOUND.value
 
         when: "A domain instance is created"
         response.reset()
@@ -142,11 +99,11 @@ class UserControllerSpec extends Specification {
         User.count() == 1
 
         when: "The domain instance is passed to the delete action"
+        request.method = 'DELETE'
         controller.delete(user)
 
         then: "The instance is deleted"
         User.count() == 0
-        response.redirectedUrl == '/user/index'
-        flash.message != null
+        response.status == NO_CONTENT.value
     }
 }
