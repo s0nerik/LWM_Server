@@ -5,6 +5,8 @@
 <polymer-element name="song-card" extends="ujiro-card" attributes="title artist year cover_url">
 
     <template>
+        <link href='http://fonts.googleapis.com/css?family=Noto+Sans:400,700&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+
         <style>
             :host {
                 width: 180px;
@@ -14,21 +16,29 @@
                 /*box-sizing: border-box;*/
             }
 
-            .title {
+            .text {
                 padding: 8px;
             }
+            .title {
+                font-family: 'Noto Sans', sans-serif, bold;
+                font-size: 14pt;
+                white-space:nowrap;
+            }
             .artist {
-                padding: 8px;
+                font-family: 'Noto Sans', sans-serif;
+                font-size: 12pt;
             }
         </style>
         <section id="cover" class="media">
             <core-image src="{{cover_url}}" style="width:180px; height: 180px;" sizing="cover" ></core-image>
         </section>
-        <section id="title" class="title">
-            {{title}}
-        </section>
-        <section id="artist" class="artist">
-            {{artist}}
+        <section class="text">
+            <section id="title" class="title">
+                {{title}}
+            </section>
+            <section id="artist" class="artist">
+                {{artist}}
+            </section>
         </section>
     </template>
 

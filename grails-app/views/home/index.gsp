@@ -53,7 +53,7 @@
 
     <style>
         body {
-            font-family: sans-serif;
+            font-family: 'Noto Sans', sans-serif;
         }
 
         .navigation_drawer_toolbar {
@@ -65,7 +65,21 @@
 
         core-scaffold::shadow core-toolbar {
             background: ${colorPrimary};
+            font-family: 'Noto Sans', sans-serif;
             color: white;
+        }
+
+        .drawer_username {
+            color: #ffffff;
+            z-index: 1;
+            padding-left: 16px;
+            font-size: 14pt;
+        }
+
+        .drawer-dropdown-btn {
+            color: #ffffff;
+            margin: auto;
+            margin-right: 16px;
         }
 
         /*core-scaffold::shadow core-header-panel {*/
@@ -77,6 +91,7 @@
     <style shim-shadowdom>
         core-scaffold core-toolbar {
             background: ${colorPrimary};
+            font-family: 'Noto Sans', sans-serif;
             color: white;
         }
 
@@ -100,7 +115,11 @@
                     <div style="height: ${navDrawerWidth};" vertical layout>
                         <core-image style="width: ${navDrawerWidth}; height: ${navDrawerWidth};" sizing="cover" src="${user.avatar_url}" fit></core-image>
                         <span flex></span>
-                        <p style="color: #ffffff; z-index: 1; padding-left: 16px;" class="gradient-bottom">${user.name}</p>
+                        <div horizontal layout>
+                            <p class="drawer_username gradient-bottom">${user.name}</p>
+                            <span flex></span>
+                            <core-icon icon="arrow-drop-down-circle" class="drawer-dropdown-btn" ></core-icon>
+                        </div>
                     </div>
                     <core-menu vertical layout flex selected="0" selectedItem="{{menuSelection}}">
                         <core-item icon="history" label="Playback history"></core-item>
