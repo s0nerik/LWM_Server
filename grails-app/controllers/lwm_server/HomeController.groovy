@@ -5,7 +5,7 @@ class HomeController {
     def springSecurityService
 
     def index() {
-        def currentUser = springSecurityService.currentUser
+        def currentUser = springSecurityService.principal.userProfile.attributes
         [user: currentUser]
     }
 

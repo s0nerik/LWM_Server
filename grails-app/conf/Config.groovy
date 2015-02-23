@@ -144,33 +144,46 @@ grails.plugin.springsecurity.interceptUrlMap = [
         '/logout/**':                     ['permitAll'],
         '/oauth/**':                      ['permitAll'],
 
+        '/api/login':                      ['permitAll'],
+
         '/home/**':                       ['ROLE_USER', 'ROLE_ADMIN'],
+        '/settings/**':                   ['ROLE_USER', 'ROLE_ADMIN'],
 ]
 
-def baseURL = grails.serverURL ?: "http://127.0.0.1:${System.getProperty('server.port', '8080')}"
+def baseURL = grails.serverURL ?: "http://localhost:${System.getProperty('server.port', '8080')}"
 
-// OAuth (Google+)
-oauth {
-    debug = true
-    providers {
-        google {
-            api = org.grails.plugin.springsecurity.oauth.GoogleApi20
-            key = System.env['OAUTH_GOOGLE_KEY']
-            secret = System.env['OAUTH_GOOGLE_SECRET']
-            successUri = '/oauth/google/success'
-            failureUri = '/oauth/google/error'
-            callback = "${baseURL}/oauth/google/callback"
-            scope = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email'
+//// OAuth (Google+)
+//oauth {
+//    debug = true
+//    providers {
+//        google {
+//            api = org.grails.plugin.springsecurity.oauth.GoogleApi20
+//            key = System.env['OAUTH_GOOGLE_KEY']
+//            secret = System.env['OAUTH_GOOGLE_SECRET']
+//            successUri = '/oauth/google/success'
+//            failureUri = '/oauth/google/error'
+//            callback = "${baseURL}/oauth/google/callback"
+//            scope = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email'
+//        }
+//    }
+//}
+
+grails {
+    plugin {
+        springsecurity {
+            rest {
+                oauth {
+                    frontendCallbackUrl = { String tokenValue -> "${baseURL}/home#token=${tokenValue}" }
+
+                    google {
+                        client = org.pac4j.oauth.client.Google2Client
+                        key = System.env['OAUTH_GOOGLE_KEY']
+                        secret = System.env['OAUTH_GOOGLE_SECRET']
+                        scope = org.pac4j.oauth.client.Google2Client.Google2Scope.EMAIL_AND_PROFILE
+                        defaultRoles = ['ROLE_USER']
+                    }
+                }
+            }
         }
     }
 }
-
-//grails.google.api.url="https://www.googleapis.com/oauth2/v1/userinfo"
-
-//Allow logout with a GET request
-grails.plugin.springsecurity.logout.postOnly = false
-
-grails.plugin.springsecurity.auth.loginFormUrl = '/oauth/google/authenticate?redirectUrl='
-
-grails.plugin.springsecurity.successHandler.defaultTargetUrl = '/home'
-grails.plugin.springsecurity.successHandler.alwaysUseDefault = true

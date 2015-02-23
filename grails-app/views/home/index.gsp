@@ -113,7 +113,7 @@
                 </core-toolbar>
                 <div vertical layout fit>
                     <div style="height: ${navDrawerWidth};" vertical layout>
-                        <core-image style="width: ${navDrawerWidth}; height: ${navDrawerWidth};" sizing="cover" src="${user.avatar_url}" fit></core-image>
+                        <core-image style="width: ${navDrawerWidth}; height: ${navDrawerWidth};" sizing="cover" src="${user.picture}" fit></core-image>
                         <span flex></span>
                         <div horizontal layout>
                             <p class="drawer_username gradient-bottom">${user.name}</p>
