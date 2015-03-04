@@ -25,11 +25,7 @@ class SettingsController {
             return
         }
 
-        def authToken = request.getHeader("Authorization").split(" ")[1]
-        def u = tokenStorageService.loadUserByToken(authToken)
-        def u1 = User.findByUsername u.username
-
-        settingsInstance.user = u1
+        settingsInstance.user = request.user
         settingsInstance.validate()
         if (settingsInstance.hasErrors()) {
             render status: NOT_ACCEPTABLE
