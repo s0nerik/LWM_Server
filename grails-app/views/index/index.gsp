@@ -42,9 +42,9 @@
     %{--<s2o:ifLoggedInWith provider="google"></s2o:ifLoggedInWith>--}%
     %{--<s2o:ifNotLoggedInWith provider="google"></s2o:ifNotLoggedInWith>--}%
 
-    <sec:ifNotLoggedIn>
-        <oauth:connect provider="google" id="google-connect-link" class="google-btn animated bounceInDown delayed2_25" />
-    </sec:ifNotLoggedIn>
+    %{--<sec:ifNotLoggedIn>--}%
+        %{--<oauth:connect provider="google" id="google-connect-link" class="google-btn animated bounceInDown delayed2_25" />--}%
+    %{--</sec:ifNotLoggedIn>--}%
 
     <start-page-middle id="middle" />
 

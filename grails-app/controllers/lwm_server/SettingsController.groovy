@@ -1,11 +1,14 @@
 package lwm_server
 
+import grails.transaction.Transactional
 
 import static org.springframework.http.HttpStatus.*
-import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
 class SettingsController {
+
+    def tokenStorageService
+    def userDetailsService
 
     static responseFormats = ['json', 'xml']
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
@@ -22,6 +25,11 @@ class SettingsController {
             return
         }
 
+        def authToken = request.getHeader("Authorization").split(" ")[1]
+        def u = tokenStorageService.loadUserByToken(authToken)
+        def u1 = User.findByUsername u.username
+
+        settingsInstance.user = u1
         settingsInstance.validate()
         if (settingsInstance.hasErrors()) {
             render status: NOT_ACCEPTABLE

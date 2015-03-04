@@ -8,7 +8,6 @@ class User {
     String avatar_url
     String profile_url
     String email
-    String googleID
 
     String username
     String password
@@ -17,15 +16,14 @@ class User {
     boolean accountLocked
     boolean passwordExpired
 
-    static hasMany = [OAuthIDs: OAuthID, songs: Song, playbackHistory: PlaybackHistoryItem]
+    static hasMany = [songs: Song, playbackHistory: PlaybackHistoryItem]
 
     static transients = ['springSecurityService']
 
     static constraints = {
-        username blank: false, unique: false
+        username blank: false, unique: true  // Google ID
         password blank: true, nullable: false
 
-        googleID blank: false, unique: true
         email blank: false, unique: true
         name size: 2..50, blank: true, nullable: true
         avatar_url nullable: true

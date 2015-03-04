@@ -122,11 +122,12 @@ log4j.main = {
 grails.plugin.springsecurity.userLookup.userDomainClassName = 'lwm_server.User'
 grails.plugin.springsecurity.authority.className = 'lwm_server.Role'
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'lwm_server.UserRole'
-grails.plugin.springsecurity.oauth.domainClass = 'lwm_server.OAuthID'
-//grails.plugin.springsecurity.oauth.registration.linkOrCreateAccountUri = 'lwm_server.OAuthID'
 
-//// Use 'email' instead of 'username' to login
-//grails.plugin.springsecurity.userLookup.usernamePropertyName = 'email'
+grails.plugin.springsecurity.rest.token.storage.useGorm = true
+grails.plugin.springsecurity.rest.token.storage.gorm.tokenDomainClassName = 'lwm_server.AuthenticationToken'
+
+//// Use 'googleID' instead of 'username' to login
+//grails.plugin.springsecurity.userLookup.usernamePropertyName = 'googleID'
 
 // IDK Why, but OAuth works only with interceptUrlMap, but not with staticRules
 grails.plugin.springsecurity.securityConfigType = 'InterceptUrlMap'
@@ -147,26 +148,10 @@ grails.plugin.springsecurity.interceptUrlMap = [
         '/api/login':                      ['permitAll'],
 
         '/home/**':                       ['ROLE_USER', 'ROLE_ADMIN'],
-        '/settings/**':                   ['ROLE_USER', 'ROLE_ADMIN'],
+        '/settings/**':                   ['ROLE_USER', 'ROLE_NO_ROLES', 'ROLE_ADMIN'],
 ]
 
 def baseURL = grails.serverURL ?: "http://localhost:${System.getProperty('server.port', '8080')}"
-
-//// OAuth (Google+)
-//oauth {
-//    debug = true
-//    providers {
-//        google {
-//            api = org.grails.plugin.springsecurity.oauth.GoogleApi20
-//            key = System.env['OAUTH_GOOGLE_KEY']
-//            secret = System.env['OAUTH_GOOGLE_SECRET']
-//            successUri = '/oauth/google/success'
-//            failureUri = '/oauth/google/error'
-//            callback = "${baseURL}/oauth/google/callback"
-//            scope = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email'
-//        }
-//    }
-//}
 
 grails {
     plugin {
