@@ -7,8 +7,9 @@ class AuthFilters {
     def tokenStorageService
 
     def filters = {
-        restActionsAuth(controller:'index|*auth*', action:'*', invert: true) {
+        restActionsAuth(controller:'home|index|*auth*', action:'*', invert: true) {
             before = {
+
                 String authToken = request.getHeader("Authorization")?.split(" ")?.getAt(1)
 
                 if (!authToken) return false

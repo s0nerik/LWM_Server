@@ -1,5 +1,4 @@
 package lwm_server
-
 import grails.transaction.Transactional
 
 import static org.springframework.http.HttpStatus.*

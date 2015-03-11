@@ -42,6 +42,8 @@
     %{--<s2o:ifLoggedInWith provider="google"></s2o:ifLoggedInWith>--}%
     %{--<s2o:ifNotLoggedInWith provider="google"></s2o:ifNotLoggedInWith>--}%
 
+    <a href="/oauth/authenticate/google" class="google-btn animated bounceInDown delayed2_25" ></a>
+
     %{--<sec:ifNotLoggedIn>--}%
         %{--<oauth:connect provider="google" id="google-connect-link" class="google-btn animated bounceInDown delayed2_25" />--}%
     %{--</sec:ifNotLoggedIn>--}%
