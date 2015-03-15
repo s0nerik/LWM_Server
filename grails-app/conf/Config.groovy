@@ -169,11 +169,10 @@ grails {
                     }
 
                     google_mobile {
-                        client = org.pac4j.oauth.client.Google2Client
+                        client = Google2ClientMobile
                         key = System.env['OAUTH_GOOGLE_KEY']
                         secret = System.env['OAUTH_GOOGLE_SECRET']
                         scope = ""
-//                        scope = org.pac4j.oauth.client.Google2Client.Google2Scope.EMAIL_AND_PROFILE
                         defaultRoles = ['ROLE_USER']
                     }
                 }

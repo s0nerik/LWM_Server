@@ -10,6 +10,6 @@ class UrlMappings {
         "/"(controller: "index")
         "500"(view:'/error')
 
-        "/settings"(resources:"settings")
+        "/api/settings"(resource:"settings")
 	}
 }

@@ -17,6 +17,7 @@ class User {
     boolean passwordExpired
 
     static hasMany = [songs: Song, playbackHistory: PlaybackHistoryItem]
+    static hasOne = [settings: Settings]
 
     static transients = ['springSecurityService']
 
@@ -28,6 +29,7 @@ class User {
         name size: 2..50, blank: true, nullable: true
         avatar_url nullable: true
         profile_url nullable: true
+        settings nullable: true
     }
 
     static mapping = {
