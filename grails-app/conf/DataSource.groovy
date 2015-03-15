@@ -4,11 +4,23 @@ dataSource {
 //    driverClassName = "org.h2.Driver"
     driverClassName = "org.postgresql.Driver"
 //    username = "sa"
-    username = "sonerik"
+    if (System.env.DATABASE_URL) {
+        uri = new URI(System.env.DATABASE_URL)
+
+        url = "jdbc:postgresql://"+uri.host+uri.path
+        username = uri.userInfo.split(":")[0]
+        password = uri.userInfo.split(":")[1]
+    } else {
+        url = "jdbc:postgresql://localhost:5432/lwm"
+        username = "sonerik"
+        password = ""
+    }
+//    username = "sonerik"
+
 
     dialect = "org.hibernate.dialect.PostgreSQLDialect"
 
-    password = ""
+//    password = ""
 }
 hibernate {
     cache.use_second_level_cache = true
@@ -25,7 +37,7 @@ environments {
         dataSource {
             dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
 //            url = "jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
-            url = "jdbc:postgresql://localhost:5432/lwm"
+//            url = "jdbc:postgresql://localhost:5432/lwm"
         }
     }
     test {
@@ -37,7 +49,7 @@ environments {
     production {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:h2:prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
+//            url = "jdbc:h2:prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
             properties {
                // See http://grails.org/doc/latest/guide/conf.html#dataSource for documentation
                jmxEnabled = true
