@@ -4,8 +4,12 @@ dataSource {
 //    driverClassName = "org.h2.Driver"
     driverClassName = "org.postgresql.Driver"
 //    username = "sa"
-    if (System.env.DATABASE_URL) {
-        uri = new URI(System.env.DATABASE_URL)
+    if (System.env.DATABASE_URL || System.env.OPENSHIFT_POSTGRESQL_DB_URL) {
+        if (System.env.DATABASE_URL) {
+            uri = new URI(System.env.DATABASE_URL)
+        } else {
+            uri = new URI(System.env.OPENSHIFT_POSTGRESQL_DB_URL)
+        }
 
         url = "jdbc:postgresql://"+uri.host+uri.path
         username = uri.userInfo.split(":")[0]
