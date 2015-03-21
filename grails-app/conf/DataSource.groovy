@@ -1,10 +1,28 @@
+import groovy.json.JsonSlurper
+
 dataSource {
     pooled = true
     jmxExport = true
 //    driverClassName = "org.h2.Driver"
     driverClassName = "org.postgresql.Driver"
 //    username = "sa"
-    if (System.env.DATABASE_URL || System.env.OPENSHIFT_POSTGRESQL_DB_URL) {
+
+    if (System.env.VCAP_SERVICES) {
+        def vcapServices = new JsonSlurper().parseText(System.env.VCAP_SERVICES)
+        def settingsJson = vcapServices['postgresql-9.1'][0]
+        def credentials = settingsJson.credentials
+
+        url = "jdbc:postgresql://${credentials.host}:${credentials.port}/${credentials.name}"
+        username = credentials.username
+        password = credentials.password
+
+        println """\
+url: ${url}
+username: ${username}
+password: ${password}
+"""
+
+    } else if (System.env.DATABASE_URL || System.env.OPENSHIFT_POSTGRESQL_DB_URL) {
         if (System.env.DATABASE_URL) {
             uri = new URI(System.env.DATABASE_URL)
         } else {
