@@ -85,7 +85,11 @@ grails.hibernate.pass.readonly = false
 // configure passing read-only to OSIV session by default, requires "singleSession = false" OSIV mode
 grails.hibernate.osiv.readonly = false
 
-grails.app.context='/'
+if (!System.env.IN_IDE) {
+    grails.serverURL =  "http://lwm.eu01.aws.af.cm/"
+}
+
+grails.app.context = '/'
 
 environments {
     development {
@@ -160,21 +164,29 @@ grails {
                 oauth {
                     frontendCallbackUrl = { String tokenValue -> "${baseURL}/home#token=${tokenValue}" }
 
-                    google {
-                        client = org.pac4j.oauth.client.Google2Client
-                        key = System.env['OAUTH_GOOGLE_KEY']
-                        secret = System.env['OAUTH_GOOGLE_SECRET']
-                        scope = org.pac4j.oauth.client.Google2Client.Google2Scope.EMAIL_AND_PROFILE
-                        defaultRoles = ['ROLE_USER']
-                    }
+//                    google {
+//                        client = org.pac4j.oauth.client.Google2Client
+//                        key = System.env['OAUTH_GOOGLE_KEY']
+//                        secret = System.env['OAUTH_GOOGLE_SECRET']
+//                        scope = org.pac4j.oauth.client.Google2Client.Google2Scope.EMAIL_AND_PROFILE
+//                        defaultRoles = ['ROLE_USER']
+//                    }
 
-                    google_mobile {
-                        client = Google2ClientMobile
+                    google {
+                        client = Google2OneTimeCodeClient
                         key = System.env['OAUTH_GOOGLE_KEY']
                         secret = System.env['OAUTH_GOOGLE_SECRET']
                         scope = ""
                         defaultRoles = ['ROLE_USER']
                     }
+
+//                    google_mobile {
+//                        client = Google2ClientMobile
+//                        key = System.env['OAUTH_GOOGLE_KEY']
+//                        secret = System.env['OAUTH_GOOGLE_SECRET']
+//                        scope = ""
+//                        defaultRoles = ['ROLE_USER']
+//                    }
                 }
             }
         }
