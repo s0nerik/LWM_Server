@@ -28,9 +28,9 @@ public class Google2ClientREST extends BaseOAuth20Client<Google2Profile> {
 
     @Override
     protected void internalInit() {
-        super.internalInit();
+//        super.internalInit();
         this.service = new ProxyOAuth20ServiceImpl(new GoogleApi20(), new OAuthConfig(this.key, this.secret,
-                this.callbackUrl,
+                "postmessage",
                 SignatureType.Header,
                 "", null),
                 this.connectTimeout, this.readTimeout, this.proxyHost,
