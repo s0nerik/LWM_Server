@@ -14,6 +14,7 @@ class RestOauthController {
 
     final CALLBACK_ATTR = "spring-security-rest-callback"
 
+    def tokenStorageService
     def restOauthService
     def grailsApplication
 
@@ -95,7 +96,9 @@ class RestOauthController {
 
         try {
             String tokenValue = restOauthService.storeAuthentication(provider, context)
-            render([access_token: tokenValue] as JSON)
+            def u = tokenStorageService.loadUserByToken(tokenValue)
+            def user = User.findByUsername(u.username)
+            render([access_token: tokenValue, user: user] as JSON)
         } catch (Exception e) {
             log.debug "RestOauthController oneTimeCodeCallback error: ${e.message}"
             render (status: 400, contentType: "text/json", text: e as JSON)
