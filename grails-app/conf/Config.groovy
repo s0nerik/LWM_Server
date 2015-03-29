@@ -172,21 +172,21 @@ grails {
 //                        defaultRoles = ['ROLE_USER']
 //                    }
 
-                    google {
-                        client = Google2OneTimeCodeClient
+                    google_rest {
+                        client = Google2ClientREST
                         key = System.env['OAUTH_GOOGLE_KEY']
                         secret = System.env['OAUTH_GOOGLE_SECRET']
                         scope = ""
                         defaultRoles = ['ROLE_USER']
                     }
 
-//                    google_mobile {
-//                        client = Google2ClientMobile
-//                        key = System.env['OAUTH_GOOGLE_KEY']
-//                        secret = System.env['OAUTH_GOOGLE_SECRET']
-//                        scope = ""
-//                        defaultRoles = ['ROLE_USER']
-//                    }
+                    google_mobile {
+                        client = Google2ClientMobile
+                        key = System.env['OAUTH_GOOGLE_KEY']
+                        secret = System.env['OAUTH_GOOGLE_SECRET']
+                        scope = ""
+                        defaultRoles = ['ROLE_USER']
+                    }
                 }
             }
         }

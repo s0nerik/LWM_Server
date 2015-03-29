@@ -11,26 +11,26 @@ import org.scribe.model.SignatureType;
 import org.scribe.model.Token;
 import org.scribe.oauth.ProxyOAuth20ServiceImpl;
 
-public class Google2OneTimeCodeClient extends BaseOAuth20Client<Google2Profile> {
+public class Google2ClientREST extends BaseOAuth20Client<Google2Profile> {
 
-    public Google2OneTimeCodeClient() {
+    public Google2ClientREST() {
     }
 
-    public Google2OneTimeCodeClient(final String key, final String secret) {
+    public Google2ClientREST(final String key, final String secret) {
         setKey(key);
         setSecret(secret);
     }
 
     @Override
-    protected Google2OneTimeCodeClient newClient() {
-        return new Google2OneTimeCodeClient();
+    protected Google2ClientREST newClient() {
+        return new Google2ClientREST();
     }
 
     @Override
     protected void internalInit() {
-//        super.internalInit();
+        super.internalInit();
         this.service = new ProxyOAuth20ServiceImpl(new GoogleApi20(), new OAuthConfig(this.key, this.secret,
-                "",
+                this.callbackUrl,
                 SignatureType.Header,
                 "", null),
                 this.connectTimeout, this.readTimeout, this.proxyHost,

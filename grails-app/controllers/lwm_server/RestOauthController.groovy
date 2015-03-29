@@ -90,7 +90,7 @@ class RestOauthController {
 //        redirect url: frontendCallbackUrl
 //    }
 
-    def oneTimeCodeCallback(String provider) {
+    def callback(String provider) {
         WebContext context = new J2EContext(request, response)
 
         try {
