@@ -130,39 +130,14 @@ grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'lwm_server.Use
 grails.plugin.springsecurity.rest.token.storage.useGorm = true
 grails.plugin.springsecurity.rest.token.storage.gorm.tokenDomainClassName = 'lwm_server.AuthenticationToken'
 
-//// Use 'googleID' instead of 'username' to login
-//grails.plugin.springsecurity.userLookup.usernamePropertyName = 'googleID'
-
-// IDK Why, but OAuth works only with interceptUrlMap, but not with staticRules
-grails.plugin.springsecurity.securityConfigType = 'InterceptUrlMap'
-grails.plugin.springsecurity.interceptUrlMap = [
-        '/':                              ['permitAll'],
-        '/index':                         ['permitAll'],
-        '/index.gsp':                     ['permitAll'],
-        '/assets/**':                     ['permitAll'],
-        '/**/js/**':                      ['permitAll'],
-        '/**/css/**':                     ['permitAll'],
-        '/**/images/**':                  ['permitAll'],
-        '/**/favicon.ico':                ['permitAll'],
-
-        '/login/**':                      ['permitAll'],
-        '/logout/**':                     ['permitAll'],
-        '/oauth/**':                      ['permitAll'],
-
-        '/api/login':                      ['permitAll'],
-
-        '/home/**':                       ['ROLE_USER', 'ROLE_ADMIN'],
-        '/settings/**':                   ['ROLE_USER', 'ROLE_NO_ROLES', 'ROLE_ADMIN'],
-]
-
-def baseURL = grails.serverURL ?: "http://localhost:${System.getProperty('server.port', '8080')}"
+//def baseURL = grails.serverURL ?: "http://localhost:${System.getProperty('server.port', '8080')}"
 
 grails {
     plugin {
         springsecurity {
             rest {
                 oauth {
-                    frontendCallbackUrl = { String tokenValue -> "${baseURL}/home#token=${tokenValue}" }
+//                    frontendCallbackUrl = { String tokenValue -> "${baseURL}/home#token=${tokenValue}" }
 
 //                    google {
 //                        client = org.pac4j.oauth.client.Google2Client

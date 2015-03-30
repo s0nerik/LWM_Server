@@ -1,8 +1,11 @@
 package lwm_server
+
+import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
 
 import static org.springframework.http.HttpStatus.*
 
+@Secured(['ROLE_ADMIN', 'ROLE_USER'])
 @Transactional(readOnly = true)
 class SettingsController {
 
@@ -10,11 +13,16 @@ class SettingsController {
     def userDetailsService
 
     static responseFormats = ['json', 'xml']
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [show: "GET", save: "POST", update: "PUT", delete: "DELETE"]
 
+    @Secured(['ROLE_ADMIN'])
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Settings.list(params), [status: OK]
+    }
+
+    def show() {
+        respond request.user.settings, [status: OK]
     }
 
     @Transactional

@@ -1,6 +1,8 @@
 import com.odobo.grails.plugin.springsecurity.rest.oauth.OauthUser
 import com.odobo.grails.plugin.springsecurity.rest.oauth.OauthUserDetailsService
+import lwm_server.Role
 import lwm_server.User
+import lwm_server.UserRole
 import org.pac4j.core.profile.CommonProfile
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
@@ -42,6 +44,10 @@ class LWMOauthUserDetailsService implements OauthUserDetailsService {
 
         if (!u.save(true)) {
             log.error("Can't save user, errors:\n${u.errors}")
+        } else {
+            if (!UserRole.create(u, Role.findByAuthority("ROLE_USER"), true)) {
+                log.error("Can't save user role.")
+            }
         }
 
         return oauthUser
