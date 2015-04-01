@@ -1,15 +1,10 @@
 class UrlMappings {
 
 	static mappings = {
-        "/$controller/$action?/$id?(.$format)?"{
-            constraints {
-                // apply constraints here
-            }
+        "/$controller/$id?"{
+            action = [GET:"show", POST:"save", PUT:"update", DELETE:"remove"]
         }
 
-        "/"(controller: "index")
-        "500"(view:'/error')
-
-        "/api/settings"(resource:"settings")
+        "/me"(resource: "me")
 	}
 }

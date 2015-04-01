@@ -16,12 +16,6 @@ dataSource {
         username = credentials.username
         password = credentials.password
 
-        println """\
-url: ${url}
-username: ${username}
-password: ${password}
-"""
-
     } else if (System.env.DATABASE_URL || System.env.OPENSHIFT_POSTGRESQL_DB_URL) {
         if (System.env.DATABASE_URL) {
             uri = new URI(System.env.DATABASE_URL)
@@ -37,12 +31,9 @@ password: ${password}
         username = "sonerik"
         password = ""
     }
-//    username = "sonerik"
 
 
     dialect = "org.hibernate.dialect.PostgreSQLDialect"
-
-//    password = ""
 }
 hibernate {
     cache.use_second_level_cache = true
