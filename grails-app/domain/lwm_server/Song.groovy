@@ -11,6 +11,7 @@ class Song {
     static constraints = {
         title blank: false, nullable: false
         duration blank: false
+        year blank: true, nullable: true
     }
 
     static mapping = {

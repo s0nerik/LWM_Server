@@ -167,3 +167,5 @@ grails {
         }
     }
 }
+
+lastfm.key = System.env['LAST_FM_KEY']

@@ -12,7 +12,7 @@ class MeController {
     static responseFormats = ['json']
     static allowedMethods = [update: "PUT", delete: "DELETE"]
 
-    def index() {
+    def show() {
         respond request.user, [status: OK]
     }
 
@@ -36,8 +36,8 @@ class MeController {
     }
 
     @Transactional
-    def delete() {
-        def userInstance = request.user
+    def delete(User userInstance) {
+//        def userInstance = request.user
 
         if (userInstance == null) {
             render status: NOT_FOUND
