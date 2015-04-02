@@ -67,7 +67,7 @@ grails.project.dependency.resolution = {
         runtime ":database-migration:1.4.0"
 
         compile ":spring-security-core:2.0-RC4"
-        compile ":spring-security-rest:1.5.0.M2"
+        compile ":spring-security-rest:1.4.1"
 
         compile ":rest-client-builder:2.1.1"
     }
