@@ -6,10 +6,11 @@ class Artist {
     int songsNum
     int albumsNum
 
-    static hasMany = [albums: Album]
+    static hasMany = [albums: Album, songs: Song]
 
     static constraints = {
-        name blank: false, nullable: false
+        name blank: true, nullable: true
+//        name blank: true, nullable: true, unique: true
         songsNum blank: true, nullable: true
         albumsNum blank: true, nullable: true
     }

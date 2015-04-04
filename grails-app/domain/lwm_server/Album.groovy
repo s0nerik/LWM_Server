@@ -10,7 +10,7 @@ class Album {
     static belongsTo = [artist: Artist]
 
     static constraints = {
-        title blank: false, nullable: false
+        title blank: true, nullable: true
         coverUrl blank: true, nullable: true
         year blank: true, nullable: true
     }

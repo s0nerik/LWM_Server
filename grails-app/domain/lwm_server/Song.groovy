@@ -6,6 +6,7 @@ class Song {
     int duration
     int year
 
+    static hasOne = [artist: Artist]
     static belongsTo = [album: Album]
 
     static constraints = {
