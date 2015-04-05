@@ -1,14 +1,11 @@
 package lwm_server
 
-import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
 import spock.lang.Specification
-
 /**
  * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
  */
 @TestFor(Song)
-@Mock([Album, Artist])
 class SongSpec extends Specification {
 
     def setup() {
@@ -17,22 +14,21 @@ class SongSpec extends Specification {
     def cleanup() {
     }
 
-    void "test creating of a new Song without specifying Album"() {
+    void "test validating various songs"() {
         given:
-        Song s = new Song()
+        def songs = []
+        songs << new Song()
+        songs << new Song(album: new Album())
+        songs << new Song(title: "Hello, Dolly", album: new Album())
+        songs << new Song(title: "Hello, Dolly", duration: 16000, album: new Album())
+        songs << new Song(title: "Hello, Dolly", duration: 16000, album: new Album(), artist: new Artist())
 
-        expect:
-        s.validate() == false
-    }
+        when:
+        songs*.validate()
 
-    void "test creating of a new Song with specifying Album"() {
-        given:
-        Artist artist = new Artist(name: "Asking Alexandria")
-        Album album = new Album(title: "From Death To Destiny", artist: artist)
-        Song s = new Song(title: "Don't Pray For Me", album: album, duration: 3*1000*60)
-
-        expect:
-        s.validate() == true
+        then:
+        songs[0..3].each { it.hasErrors() }
+        !songs[-1].hasErrors()
     }
 
 }

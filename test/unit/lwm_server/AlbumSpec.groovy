@@ -27,9 +27,9 @@ class AlbumSpec extends Specification {
         albums*.validate()
 
         then:
-        albums[0..2].each { it.errors }
-        albums[2..-2].each { !it.errors }
-        albums[-1].errors
+        albums[0..2].each { it.hasErrors() }
+        albums[2..-2].each { !it.hasErrors() }
+        albums[-1].hasErrors()
     }
 
 }

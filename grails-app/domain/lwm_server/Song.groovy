@@ -11,11 +11,13 @@ class Song {
 
     static constraints = {
         title blank: false, nullable: false
-        duration blank: false
+        duration blank: false, nullable: false
         year blank: true, nullable: true
     }
 
     static mapping = {
         table 'songs'
+
+        duration defaultValue: 0
     }
 }
