@@ -1,14 +1,11 @@
 package lwm_server
 
-import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
 import spock.lang.Specification
-
 /**
  * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
  */
 @TestFor(Album)
-@Mock(Artist)
 class AlbumSpec extends Specification {
 
     def setup() {
@@ -17,30 +14,22 @@ class AlbumSpec extends Specification {
     def cleanup() {
     }
 
-    void "test validating an Album without an Artist"() {
+    void "test validating various albums"() {
         given:
-        Album a = new Album(title: "Master Of Puppets")
+        def albums = []
+        albums << new Album()
+        albums << new Album(title: "Master Of Puppets")
+        albums << new Album(artist: new Artist(), title: "Master Of Puppets")
+        albums << new Album(artist: new Artist(), title: "Master Of Puppets", coverUrl: "http://mamazon.com/master.jpg")
+        albums << new Album(artist: new Artist(), title: "Master Of Puppets", coverUrl: "ae.mamazon.com")
 
-        expect:
-        a.validate() == false
-    }
+        when:
+        albums*.validate()
 
-    void "test validating an Album without a title"() {
-        given:
-        Artist artist = new Artist(name: "Asking Alexandria")
-        Album a = new Album(artist: artist)
-
-        expect:
-        a.validate() == false
-    }
-
-    void "test validating an Album with an Artist"() {
-        given:
-        Artist artist = new Artist(name: "Asking Alexandria")
-        Album a = new Album(title: "From Death To Destiny", artist: artist)
-
-        expect:
-        a.validate() == true
+        then:
+        albums[0..2].each { it.errors }
+        albums[2..-2].each { !it.errors }
+        albums[-1].errors
     }
 
 }
