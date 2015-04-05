@@ -84,6 +84,7 @@ class LWMOauthUserDetailsService implements OauthUserDetailsService {
             log.error("Can't save user, errors:\n${u.errors}")
         } else {
             u.addToSongs(s)
+            u.addToFavorites(s)
 
             u.save(flush: true)
 
