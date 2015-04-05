@@ -21,7 +21,7 @@ class User {
 
     static embedded = ['settings']
 
-    static hasMany = [songs: Song, playbackHistory: PlaybackHistoryItem]
+    static hasMany = [songs: Song, favorites: Song, playbackHistory: PlaybackHistoryItem]
 
     static transients = ['springSecurityService']
 
@@ -39,6 +39,9 @@ class User {
     static mapping = {
         table 'users'
         password column: '`password`'
+
+        songs joinTable: [name: 'users_songs']
+        favorites joinTable: [name: 'users_favorites']
     }
 
     Set<Role> getAuthorities() {
