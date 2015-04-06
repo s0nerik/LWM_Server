@@ -14,7 +14,8 @@ beans = {
             (Settings): [],
             (Song): [],
             (Artist): [],
-            (Album): []
+            (Album): [],
+            (Playlist): []
     ]
 
     for (def entry : marshallingExcludes) {
