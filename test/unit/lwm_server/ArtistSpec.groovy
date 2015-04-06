@@ -15,20 +15,20 @@ class ArtistSpec extends Specification {
     def cleanup() {
     }
 
-    void "test validating Artist without a name"() {
+    void "test validating various Artist instances"() {
         given:
-        Artist a = new Artist()
+        def artists = []
+        artists << new Artist()
+        artists << new Artist(name: "Asking Alexandria")
+        artists << new Artist(name: "Asking Alexandria", songsNum: 16)
+        artists << new Artist(name: "Asking Alexandria", songsNum: 16, albumsNum: 3)
 
-        expect:
-        a.validate() == false
-    }
+        when:
+        artists*.validate()
 
-    void "test validating Artist with a name"() {
-        given:
-        Artist a = new Artist(name: "Asking Alexandria")
-
-        expect:
-        a.validate() == true
+        then:
+        artists[0].hasErrors()
+        artists[1..-1].each { !it.hasErrors() }
     }
 
 }

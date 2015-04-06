@@ -9,7 +9,7 @@ class Artist {
     static hasMany = [albums: Album, songs: Song]
 
     static constraints = {
-        name blank: true, nullable: true
+        name blank: false, nullable: false
 //        name blank: true, nullable: true, unique: true
         songsNum blank: true, nullable: true
         albumsNum blank: true, nullable: true
