@@ -73,10 +73,10 @@ grails.project.dependency.resolution = {
     }
 }
 
-//if (System.env.IN_IDE) {
+if (System.env.IN_IDE) {
     // For debugging
     grails.project.fork = [
             test: false,
             run : false
     ]
-//}
+}

@@ -68,25 +68,38 @@ class LWMOauthUserDetailsService implements OauthUserDetailsService {
             )
         }
 
+        // Fake song ---
         def artist = new Artist(name: "Asking Alexandria")
-        def album = new Album(artist: artist, title: "From Death To Destiny")
+        def album = new Album(title: "From Death To Destiny", year: 2009, artist: artist)
         def s = new Song(title: "The Death Of Me", artist: artist, album: album)
 
         if (artist.save(true)) {
             if (album.save(true)) {
+                artist.addToAlbums(album)
                 if (s.save(true)) {
-                    def x = 3 + 8*5;
+                    album.addToSongs(s)
                 }
             }
         }
+        // Fake song ---
 
         if (!u.save(validate: true, flush: true)) {
             log.error("Can't save user, errors:\n${u.errors}")
         } else {
+
+            // Fake playlist ---
+            def playlist = new Playlist(created: new Date(1337), name: "playlist")
+            playlist.save()
+            playlist.addToSongs(s)
+            // Fake playlist ---
+
+            // Save fake data ---
+            u.addToPlaylists(playlist)
             u.addToSongs(s)
             u.addToFavorites(s)
 
-            u.save(flush: true)
+            u.save()
+            // Save fake data ---
 
             if (!UserRole.create(u, Role.findByAuthority("ROLE_USER"), true)) {
                 log.error("Can't save user role.")

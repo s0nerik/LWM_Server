@@ -12,7 +12,7 @@ class Album {
     static constraints = {
         title blank: false, nullable: false
         coverUrl blank: true, nullable: true, url: true
-        year blank: true, nullable: true, min: 1800
+        year blank: true, nullable: true
     }
 
     static mapping = {

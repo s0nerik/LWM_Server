@@ -21,7 +21,7 @@ class User {
 
     static embedded = ['settings']
 
-    static hasMany = [songs: Song, favorites: Song, playbackHistory: PlaybackHistoryItem]
+    static hasMany = [songs: Song, favorites: Song, playbackHistory: PlaybackHistoryItem, playlists: Playlist]
 
     static transients = ['springSecurityService']
 
