@@ -17,5 +17,6 @@ class Album {
 
     static mapping = {
         table 'albums'
+        artist cascade:'all-delete-orphan'
     }
 }

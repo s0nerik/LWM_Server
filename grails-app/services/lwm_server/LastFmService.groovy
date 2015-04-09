@@ -3,7 +3,7 @@ package lwm_server
 import grails.plugins.rest.client.RestBuilder
 import grails.transaction.Transactional
 
-@Transactional
+@Transactional(readOnly = false)
 class LastFmService {
 
     def grailsApplication
@@ -16,7 +16,7 @@ class LastFmService {
                 method: "track.getInfo",
                 api_key: grailsApplication.config.lastfm.key,
                 track: song.title,
-                artist: song.album.artist,
+                artist: song.artist.name,
                 format: "json",
                 autocorrect: 1
         ]
@@ -28,11 +28,24 @@ class LastFmService {
             contentType "application/x-www-form-urlencoded"
         }
 
-        song.album.coverUrl = resp?.json?.track?.album?.image[-1]?."#text"
+        def track = resp?.json?.track
+
+        def album = song.album
+        if (!song.album) {
+            def artist = song.artist
+            artist.save()
+            album = new Album(artist: artist, title: "unknown")
+        }
+
+        album.coverUrl = track?.album?.image?.getAt(-1)?."#text"
+        album.title = track?.album?.title ?: album.title
+
+        album.save()
+
+        song.album = album
+
+        song.duration = song?.duration ?: track?.duration as int
 
         song.save()
-
-//        def resp = rest.get(ENDPOINT, [format: "json", method: "track.getInfo", api_key: grailsApplication.config.lastfm.key, track: "Don't pray for me", artist: "Asking Alexandria"])
-        log.error(resp.json)
     }
 }
