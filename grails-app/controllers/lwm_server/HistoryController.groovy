@@ -16,13 +16,13 @@ class HistoryController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def show() {
-        respond(request.user.songs.toArray() as JSON, [status: OK])
+        respond(request.user.playbackHistory.toArray() as JSON, [status: OK])
     }
 
     def save(Song song) {
         lastFmService.updateSong(song)
 
-        def historyItem = new PlaybackHistoryItem(date: new Date(System.currentTimeMillis()), song: song)
+        def historyItem = new PlaybackHistoryItem(date: new Date(System.currentTimeMillis()), song: song, user: request.user)
         historyItem.save()
 
         request.user.addToPlaybackHistory(historyItem)
