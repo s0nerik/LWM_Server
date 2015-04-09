@@ -10,7 +10,19 @@ beans = {
     /* JSON marshalling settings */
 
     def marshallingExcludes = [
-            (User): ['accountExpired', 'accountLocked', 'passwordExpired', 'password', 'enabled'],
+            (User): [
+                    'username',
+                    'accountExpired',
+                    'accountLocked',
+                    'passwordExpired',
+                    'password',
+                    'enabled',
+                    'favorites',
+                    'playbackHistory',
+                    'playlists',
+                    'settings',
+                    'songs',
+            ],
             (Settings): [],
             (Song): [],
             (Artist): [],
