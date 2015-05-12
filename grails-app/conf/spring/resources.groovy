@@ -20,9 +20,10 @@ beans = {
                     'favorites',
                     'playbackHistory',
                     'playlists',
+                    'settings',
                     'songs',
             ],
-            (Settings): ['id'],
+            (Settings): [],
             (Song): [],
             (Artist): [],
             (Album): [],
@@ -31,7 +32,7 @@ beans = {
     ]
 
     for (def entry : marshallingExcludes) {
-        def finalExcludes = ['class', 'errors', 'version'] + entry.value
+        def finalExcludes = ['class', 'errors', 'id', 'version'] + entry.value
         "${entry.key.name.toLowerCase()}CollectionRenderer"(JsonCollectionRenderer, entry.key) { excludes = finalExcludes }
         "${entry.key.name.toLowerCase()}Renderer"(JsonRenderer, entry.key) { excludes = finalExcludes }
     }
