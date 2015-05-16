@@ -39,7 +39,7 @@ grails.views.default.codec = "html"
 
 // The default scope for controllers. May be prototype, session or singleton.
 // If unspecified, controllers are prototype scoped.
-grails.controllers.defaultScope = 'singleton'
+//grails.controllers.defaultScope = 'singleton'
 
 // GSP settings
 grails {
@@ -63,6 +63,7 @@ grails {
 grails.converters.encoding = "UTF-8"
 // scaffolding templates configuration
 grails.scaffolding.templates.domainSuffix = 'Instance'
+grails.converters.default.circular.reference.behaviour = 'INSERT_NULL'
 
 // Set to false to use the new Grails 1.2 JSONBuilder in the render method
 grails.json.legacy.builder = false

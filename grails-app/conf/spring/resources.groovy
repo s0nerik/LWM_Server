@@ -27,7 +27,7 @@ beans = {
             (Song): [],
             (Artist): [],
             (Album): [],
-            (Playlist): [],
+            (Playlist): ['user'],
             (PlaybackHistoryItem): ['user']
     ]
 
