@@ -17,5 +17,6 @@ class Playlist {
         name blank: true, nullable: true
         lastUpdated nullable: true
         songsNum min: 0, defaultValue: 0
+        created nullable: true
     }
 }

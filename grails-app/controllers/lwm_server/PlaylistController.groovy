@@ -20,6 +20,10 @@ class PlaylistController {
     }
 
     def save(Playlist playlist) {
+        if (!playlist.created) {
+            playlist.created = new Date()
+        }
+
         playlist.songs.each {
             lastFmService.updateSong(it)
             playlist.addToSongs(it)
