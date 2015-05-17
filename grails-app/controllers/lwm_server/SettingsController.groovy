@@ -23,7 +23,7 @@ class SettingsController {
                                                  [
                                                          title: 'Station name',
                                                          attr : 'stationName',
-                                                         value: settings.stationName
+                                                         value: settings.stationName ?: ""
                                                  ]
                                          ]
                                  ],
