@@ -26,6 +26,16 @@ class SettingsController {
                                                          value: settings.stationName
                                                  ]
                                          ]
+                                 ],
+                                 [
+                                         title   : 'Playback settings',
+                                         settings: [
+                                                 [
+                                                         title: 'Always play shuffled',
+                                                         attr : 'alwaysShuffle',
+                                                         value: settings.alwaysShuffle
+                                                 ]
+                                         ]
                                  ]
                          ]
         ] as JSON, [status: OK])

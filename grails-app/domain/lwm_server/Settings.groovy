@@ -3,6 +3,7 @@ package lwm_server
 class Settings {
 
     String stationName
+    boolean alwaysShuffle
 
     static belongsTo = [user: User]
 
@@ -13,5 +14,6 @@ class Settings {
     static mapping = {
         table 'settings'
         stationName defaultValue: "''"
+        alwaysShuffle defaultValue: "false"
     }
 }
