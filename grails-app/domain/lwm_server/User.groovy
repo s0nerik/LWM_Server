@@ -12,15 +12,12 @@ class User {
     String username
     String password
 
-    Settings settings
-
     boolean enabled = true
     boolean accountExpired
     boolean accountLocked
     boolean passwordExpired
 
-    static embedded = ['settings']
-
+    static hasOne = [settings: Settings]
     static hasMany = [songs: Song, favorites: Song, playbackHistory: PlaybackHistoryItem, playlists: Playlist]
 
     static transients = ['springSecurityService']
@@ -60,19 +57,5 @@ class User {
 
     protected void encodePassword() {
         password = springSecurityService?.passwordEncoder ? springSecurityService.encodePassword(password) : password
-    }
-}
-
-class Settings {
-
-    String stationName
-
-    static constraints = {
-        stationName nullable: true
-    }
-
-    static mapping = {
-        table 'settings'
-        stationName defaultValue: ""
     }
 }
