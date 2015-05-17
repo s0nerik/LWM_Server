@@ -77,6 +77,7 @@ if (System.env.IN_IDE) {
     // For debugging
     grails.project.fork = [
             test: false,
-            run : false
+            run : false,
+            war : false
     ]
 }
