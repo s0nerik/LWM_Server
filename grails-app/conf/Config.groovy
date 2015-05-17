@@ -86,9 +86,9 @@ grails.hibernate.pass.readonly = false
 // configure passing read-only to OSIV session by default, requires "singleSession = false" OSIV mode
 grails.hibernate.osiv.readonly = false
 
-if (!System.env.IN_IDE) {
-    grails.serverURL =  "http://lwm.eu01.aws.af.cm/"
-}
+//if (!System.env.IN_IDE) {
+//    grails.serverURL =  "http://lwm.eu01.aws.af.cm/"
+//}
 
 grails.app.context = '/'
 
